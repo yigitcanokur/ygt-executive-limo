@@ -1,0 +1,18 @@
+YGT EXECUTIVE LIMO — CLEAN UPLOAD
+
+1. Extract this ZIP on your computer.
+2. Open the extracted folder.
+3. Upload the CONTENTS inside the folder to the ROOT of the GitHub repository:
+   app/
+   public/
+   .gitignore
+   next.config.mjs
+   package.json
+   README.md
+   UPLOAD-INSTRUCTIONS.txt
+
+Do not upload the ZIP itself.
+Do not upload the outer ygt-executive-limo-site-v3 folder as one folder.
+The app and public folders must be visible directly on the repository home page.
+
+This package uses Next.js 15.5.21 and React 19.1.2.
