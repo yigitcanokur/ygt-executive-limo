@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/api/create-checkout",
+      "destination": "/api/create-checkout"
+    }
+  ]
+}
