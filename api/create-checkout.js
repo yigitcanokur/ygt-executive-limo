@@ -38,11 +38,33 @@ module.exports = async function handler(req, res) {
       const hours = Math.max(3, Number(b.hours || 3));
       total = hourly[b.vehicle] * hours;
       description = `${hours} hour ${b.vehicle} service`;
-    } else {
-      if (!routes[b.route]) throw new Error("Unsupported route");
+    } else if (b.route && routes[b.route]) {
       total = routes[b.route][1] + adjustments[b.vehicle];
       if (b.roundTrip) total *= 2;
       description = `${routes[b.route][0]} · ${b.vehicle}${b.roundTrip ? " · Round trip" : ""}`;
+    } else {
+      if (!process.env.GOOGLE_MAPS_SERVER_API_KEY) throw new Error("Custom route pricing is not configured");
+      const origin = b.pickupPlaceId ? {placeId:b.pickupPlaceId} : {address:b.pickupAddress};
+      const destination = b.dropoffPlaceId ? {placeId:b.dropoffPlaceId} : {address:b.dropoffAddress};
+      const routeResponse = await fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "X-Goog-Api-Key":process.env.GOOGLE_MAPS_SERVER_API_KEY,
+          "X-Goog-FieldMask":"routes.distanceMeters,routes.duration"
+        },
+        body:JSON.stringify({origin,destination,travelMode:"DRIVE",routingPreference:"TRAFFIC_AWARE"})
+      });
+      const routeData = await routeResponse.json();
+      if (!routeResponse.ok || !routeData.routes?.[0]) throw new Error("Route could not be priced");
+      const miles = routeData.routes[0].distanceMeters / 1609.344;
+      const minimum = Number(process.env.CUSTOM_ROUTE_SUV_MINIMUM || 0);
+      const perMile = Number(process.env.CUSTOM_ROUTE_SUV_PER_MILE || 0);
+      if (!minimum || !perMile) throw new Error("Custom route pricing rates are not configured");
+      total = Math.max(minimum, minimum + miles * perMile) + adjustments[b.vehicle];
+      if (b.roundTrip) total *= 2;
+      total = Math.round(total);
+      description = `${b.pickupAddress} → ${b.dropoffAddress} · ${b.vehicle}${b.roundTrip ? " · Round trip" : ""}`;
     }
 
     const reservationId = `YGT-${Date.now().toString().slice(-8)}`;
@@ -68,6 +90,8 @@ module.exports = async function handler(req, res) {
         serviceType: String(b.serviceType || ""),
         route: String(b.route || ""),
         vehicle: String(b.vehicle || ""),
+        pickupAddress: String(b.pickupAddress || "").slice(0, 300),
+        dropoffAddress: String(b.dropoffAddress || "").slice(0, 300),
         date: String(b.date || ""),
         time: String(b.time || ""),
         returnDate: String(b.returnDate || ""),

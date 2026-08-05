@@ -51,8 +51,9 @@
       </div>
 
       <div class="formGrid">
-        <label id="routeWrap" class="field fieldWide"><span>Route</span>
-          <select name="route">
+        <label id="routeWrap" class="field fieldWide"><span>Quick route (optional)</span>
+          <select name="route" id="quickRoute">
+            <option value="">Custom addresses</option>
             <option value="mia-miami-beach">MIA → Miami Beach</option>
             <option value="mia-brickell">MIA → Downtown / Brickell</option>
             <option value="mia-fll">MIA → FLL</option>
@@ -61,6 +62,21 @@
             <option value="port-mia">PortMiami → MIA</option>
           </select>
         </label>
+
+        <label id="pickupWrap" class="field fieldWide"><span>Pickup address</span>
+          <input id="pickupAddress" name="pickupAddress" required placeholder="Airport, hotel, port or full address" autocomplete="off">
+          <input id="pickupPlaceId" name="pickupPlaceId" type="hidden">
+        </label>
+
+        <label id="dropoffWrap" class="field fieldWide"><span>Drop-off address</span>
+          <input id="dropoffAddress" name="dropoffAddress" required placeholder="Airport, hotel, port or full address" autocomplete="off">
+          <input id="dropoffPlaceId" name="dropoffPlaceId" type="hidden">
+        </label>
+
+        <div id="routeInfo" class="routeInfo fieldWide" hidden>
+          <div><span>Estimated distance</span><strong id="distanceText">—</strong></div>
+          <div><span>Estimated drive time</span><strong id="durationText">—</strong></div>
+        </div>
 
         <label id="hoursWrap" class="field"><span>Hours (minimum 3)</span>
           <input name="hours" type="number" min="3" value="3">
@@ -128,7 +144,7 @@
       <span class="summaryLabel">Reservation Summary</span>
       <div class="summaryRows">
         <div><span>Service</span><strong id="sumService">Point-to-Point</strong></div>
-        <div><span>Route</span><strong id="sumRoute">MIA → Miami Beach</strong></div>
+        <div><span>Route</span><strong id="sumRoute">Enter addresses</strong></div>
         <div><span>Vehicle</span><strong id="sumVehicle">Luxury SUV</strong></div>
         <div><span>Date</span><strong id="sumDate">Select date</strong></div>
       </div>
@@ -168,11 +184,11 @@
 </section>
 
 <section class="reviews section">
-  <div class="sectionIntro"><span class="eyebrow">Trusted Service</span><h2>Professional transportation, every time.</h2></div>
+  <div class="sectionIntro"><span class="eyebrow">Service Standards</span><h2>Built around reliability, comfort and clear communication.</h2></div>
   <div class="reviewGrid">
-    <article><div class="stars">★★★★★</div><p>“Excellent communication, clean vehicle and professional service from pickup to drop-off.”</p><strong>Airport Transfer Client</strong></article>
-    <article><div class="stars">★★★★★</div><p>“Reliable and comfortable transportation for our corporate schedule in Miami.”</p><strong>Corporate Client</strong></article>
-    <article><div class="stars">★★★★★</div><p>“The chauffeur was punctual, courteous and made the entire trip easy.”</p><strong>Private Client</strong></article>
+    <article><div class="stars">24/7</div><p>Direct support before pickup and throughout the trip.</p><strong>Client Support</strong></article>
+    <article><div class="stars">MIA · FLL</div><p>Airport, cruise-port and private-aviation transportation across South Florida.</p><strong>Airport Specialists</strong></article>
+    <article><div class="stars">PRIVATE</div><p>Discreet chauffeur service for executives, families and groups.</p><strong>Professional Service</strong></article>
   </div>
 </section>
 
@@ -193,6 +209,7 @@
   <div><strong>Service Areas</strong><span>Miami · Miami Beach · Brickell</span><span>Aventura · Fort Lauderdale</span><span>Boca Raton · West Palm Beach</span></div>
   <small>© 2026 YGT Executive Limo LLC. All rights reserved.</small>
 </footer>
+<script src="maps.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
