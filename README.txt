@@ -1,13 +1,22 @@
-FINAL PROJECT
+YGT EXECUTIVE LIMO — POLISHED V4
 
-Use GitHub Desktop:
-1. Clone yigitcanokur/ygt-executive-limo
-2. Delete the contents of the local repo folder
-3. Copy ALL contents of this extracted folder into it
-4. Commit and Push
+Upload ALL files and folders in this extracted folder to the ROOT of the GitHub repository.
+
+This version includes:
+- Larger logo
+- Smaller, more premium hero headline
+- Modern booking layout
+- Click-to-open calendar picker
+- 30-minute time selector
+- Round-trip return date/time
+- Sticky reservation summary
+- Rounded gold-focus inputs
+- Fleet hover effects
+- Trust and review sections
+- Stripe checkout backend
 
 Vercel Environment Variables:
-STRIPE_SECRET_KEY = your Stripe test/live secret key
-NEXT_PUBLIC_SITE_URL = https://your-project.vercel.app (later your domain)
+STRIPE_SECRET_KEY
+NEXT_PUBLIC_SITE_URL
 
-Do not put Stripe secret keys in GitHub.
+Do not put Stripe keys in GitHub.
