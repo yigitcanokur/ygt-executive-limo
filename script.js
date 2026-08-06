@@ -204,18 +204,37 @@ function normalize(value) {
 function detectFixedRoute() {
   const pickup = normalize(pickupAddress.value);
   const dropoff = normalize(dropoffAddress.value);
-  const pickupIsMia = pickup.includes("miami international airport") || pickup.includes("(mia)");
-  const dropoffIsMia = dropoff.includes("miami international airport") || dropoff.includes("(mia)");
-  const pickupIsFll = pickup.includes("fort lauderdale-hollywood") || pickup.includes("(fll)");
-  const dropoffIsFll = dropoff.includes("fort lauderdale-hollywood") || dropoff.includes("(fll)");
-  const pickupMiamiBeach = pickup.includes("miami beach");
-  const dropoffMiamiBeach = dropoff.includes("miami beach");
-  const pickupFortLauderdale = pickup.includes("fort lauderdale");
-  const dropoffFortLauderdale = dropoff.includes("fort lauderdale");
 
-  if ((pickupIsMia && dropoffMiamiBeach) || (dropoffIsMia && pickupMiamiBeach)) return "mia-miami-beach";
-  if ((pickupIsMia && dropoffIsFll) || (dropoffIsMia && pickupIsFll)) return "mia-fll";
-  if ((pickupIsFll && dropoffFortLauderdale) || (dropoffIsFll && pickupFortLauderdale)) return "fll-local";
+  const isMia = value =>
+    value.includes("miami international airport") ||
+    value.includes("(mia)") ||
+    value.includes("2100 nw 42nd");
+
+  const isFll = value =>
+    value.includes("fort lauderdale-hollywood international airport") ||
+    value.includes("(fll)") ||
+    value.includes("100 terminal dr");
+
+  const isMiamiBeach = value =>
+    value.includes("miami beach") ||
+    value.includes("fontainebleau") ||
+    value.includes("collins avenue") ||
+    value.includes("collins ave");
+
+  const isFortLauderdale = value =>
+    value.includes("fort lauderdale") ||
+    value.includes("las olas") ||
+    value.includes("hollywood, fl");
+
+  if ((isMia(pickup) && isMiamiBeach(dropoff)) || (isMia(dropoff) && isMiamiBeach(pickup))) {
+    return "mia-miami-beach";
+  }
+  if ((isMia(pickup) && isFll(dropoff)) || (isMia(dropoff) && isFll(pickup))) {
+    return "mia-fll";
+  }
+  if ((isFll(pickup) && isFortLauderdale(dropoff)) || (isFll(dropoff) && isFortLauderdale(pickup))) {
+    return "fll-local";
+  }
   return "";
 }
 
@@ -335,7 +354,10 @@ function showStep(step) {
   });
   document.getElementById("progressFill").style.width = `${(step - 1) * 50}%`;
 
-  if (step === 2) renderVehicles();
+  if (step === 2) {
+    if (serviceType() === "transfer") routeKey = detectFixedRoute();
+    renderVehicles();
+  }
   updateSummary();
   document.getElementById("booking").scrollIntoView({behavior:"smooth", block:"start"});
 }
@@ -372,15 +394,23 @@ document.querySelectorAll("[data-step-go]").forEach(button => {
   });
 });
 
+let previousServiceType = serviceType();
+
 function toggleMode() {
-  const transfer = serviceType() === "transfer";
+  const currentType = serviceType();
+  const transfer = currentType === "transfer";
   document.getElementById("pickupWrap").hidden = !transfer;
   document.getElementById("dropoffWrap").hidden = !transfer;
   document.getElementById("roundWrap").hidden = !transfer;
   document.getElementById("hoursWrap").hidden = transfer;
-  if (!transfer) routeInfo.hidden = true;
-  routeQuote = null;
-  routeKey = "";
+
+  if (currentType !== previousServiceType) {
+    routeQuote = null;
+    routeKey = transfer ? detectFixedRoute() : "";
+    if (!transfer) routeInfo.hidden = true;
+    previousServiceType = currentType;
+  }
+
   renderVehicles();
   updateSummary();
 }
@@ -436,9 +466,17 @@ document.addEventListener("ygt-maps-unavailable", () => {
   });
 });
 
-form.addEventListener("change", () => {
+form.addEventListener("change", event => {
   toggleMode();
   toggleReturn();
+
+  if (
+    serviceType() === "transfer" &&
+    ["pickupAddress", "dropoffAddress", "pickupPlaceId", "dropoffPlaceId"].includes(event.target.id)
+  ) {
+    scheduleRouteQuote();
+  }
+
   updateSummary();
 });
 form.addEventListener("input", updateSummary);

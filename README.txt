@@ -1,12 +1,16 @@
-YGT EXECUTIVE LIMO — V10.1
+YGT EXECUTIVE LIMO — WIZARD V10.2
 
-Hourly minimum package updates:
-- Passenger Sprinter: $525 for 3 hours
-- Executive Sprinter: $615 for 3 hours
+Fixed:
+- MIA → Fontainebleau / Miami Beach now correctly uses the fixed route prices
+- Vehicle prices no longer reset to “Call for availability” after form changes
+- Route detection recognizes Fontainebleau, Collins Avenue, MIA and FLL variants
+- Server independently verifies the route before creating Stripe Checkout
+- Passenger Sprinter hourly minimum remains $525
+- Executive Sprinter hourly minimum remains $615
 
-The Executive Sprinter remains $90 above the Passenger Sprinter.
-All V10 calendar, Google Places, Routes and Stripe features are retained.
-
-Upload all files/folders to the GitHub repository root, or replace only:
+You only need to replace:
 - script.js
 - api/create-checkout.js
+- index.html
+
+Or upload the entire package to the GitHub repository root.

@@ -46,6 +46,42 @@ const vehicleMultipliers = {
   "Executive Sprinter":1.82
 };
 
+
+function normalize(value) {
+  return String(value || "").toLowerCase();
+}
+
+function detectFixedRoute(body) {
+  const pickup = normalize(body.pickupAddress);
+  const dropoff = normalize(body.dropoffAddress);
+
+  const isMia = value =>
+    value.includes("miami international airport") ||
+    value.includes("(mia)") ||
+    value.includes("2100 nw 42nd");
+
+  const isFll = value =>
+    value.includes("fort lauderdale-hollywood international airport") ||
+    value.includes("(fll)") ||
+    value.includes("100 terminal dr");
+
+  const isMiamiBeach = value =>
+    value.includes("miami beach") ||
+    value.includes("fontainebleau") ||
+    value.includes("collins avenue") ||
+    value.includes("collins ave");
+
+  const isFortLauderdale = value =>
+    value.includes("fort lauderdale") ||
+    value.includes("las olas") ||
+    value.includes("hollywood, fl");
+
+  if ((isMia(pickup) && isMiamiBeach(dropoff)) || (isMia(dropoff) && isMiamiBeach(pickup))) return "mia-miami-beach";
+  if ((isMia(pickup) && isFll(dropoff)) || (isMia(dropoff) && isFll(pickup))) return "mia-fll";
+  if ((isFll(pickup) && isFortLauderdale(dropoff)) || (isFll(dropoff) && isFortLauderdale(pickup))) return "fll-local";
+  return "";
+}
+
 async function customRoutePrice(body) {
   const key = process.env.GOOGLE_MAPS_SERVER_API_KEY;
   if (!key) throw new Error("Google route pricing is not configured");
@@ -99,8 +135,11 @@ module.exports = async function handler(req, res) {
         throw new Error("Please select pickup and drop-off from Google");
       }
 
-      if (body.routeKey && fixedPricing[body.routeKey]?.[body.vehicle]) {
-        total = fixedPricing[body.routeKey][body.vehicle];
+      const verifiedRouteKey = detectFixedRoute(body) || body.routeKey || "";
+
+      if (verifiedRouteKey && fixedPricing[verifiedRouteKey]?.[body.vehicle]) {
+        total = fixedPricing[verifiedRouteKey][body.vehicle];
+        body.routeKey = verifiedRouteKey;
       } else {
         total = await customRoutePrice(body);
       }
