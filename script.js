@@ -1,175 +1,32 @@
-
-const routes = {
-  "mia-miami-beach": {label:"MIA → Miami Beach", price:110, pickup:"Miami International Airport (MIA), Miami, FL", dropoff:"Miami Beach, FL"},
-  "mia-brickell": {label:"MIA → Downtown / Brickell", price:100, pickup:"Miami International Airport (MIA), Miami, FL", dropoff:"Brickell, Miami, FL"},
-  "mia-fll": {label:"MIA → FLL", price:130, pickup:"Miami International Airport (MIA), Miami, FL", dropoff:"Fort Lauderdale-Hollywood International Airport (FLL), Fort Lauderdale, FL"},
-  "mia-boca": {label:"MIA → Boca Raton", price:180, pickup:"Miami International Airport (MIA), Miami, FL", dropoff:"Boca Raton, FL"},
-  "mia-west-palm": {label:"MIA → West Palm Beach", price:240, pickup:"Miami International Airport (MIA), Miami, FL", dropoff:"West Palm Beach, FL"},
-  "port-mia": {label:"PortMiami → MIA", price:100, pickup:"PortMiami, Miami, FL", dropoff:"Miami International Airport (MIA), Miami, FL"}
+const pricing={
+  "mia-miami-beach":{"Luxury Sedan":105,"Chevrolet Suburban":118,"Cadillac Escalade ESV":149,"Mercedes-Benz S-Class":199,"Passenger Sprinter":205,"Executive Sprinter":260},
+  "mia-fll":{"Luxury Sedan":145,"Chevrolet Suburban":169,"Cadillac Escalade ESV":215,"Mercedes-Benz S-Class":199,"Passenger Sprinter":245,"Executive Sprinter":280},
+  "fll-local":{"Luxury Sedan":104,"Chevrolet Suburban":117,"Cadillac Escalade ESV":149,"Mercedes-Benz S-Class":179,"Passenger Sprinter":195,"Executive Sprinter":225}
 };
-const adjustments = {"Luxury Sedan":-15,"Luxury SUV":0,"Passenger Van":40,"Executive Van":80};
-const hourly = {"Luxury Sedan":85,"Luxury SUV":100,"Passenger Van":140,"Executive Van":180};
-
-const form = document.querySelector("#bookingForm");
-const totalEl = document.querySelector("#total");
-const routeWrap = document.querySelector("#routeWrap");
-const pickupWrap = document.querySelector("#pickupWrap");
-const dropoffWrap = document.querySelector("#dropoffWrap");
-const hoursWrap = document.querySelector("#hoursWrap");
-const roundWrap = document.querySelector("#roundWrap");
-const returnFields = document.querySelector("#returnFields");
-const quickRoute = document.querySelector("#quickRoute");
-const routeInfo = document.querySelector("#routeInfo");
-let customQuote = null;
-let quoteTimer = null;
-
-function fillTimeSelect(id) {
-  const select = document.getElementById(id);
-  select.innerHTML = '<option value="">Select time</option>';
-  for (let h=0; h<24; h++) for (let m of [0,30]) {
-    const value = `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
-    const label = `${h % 12 || 12}:${String(m).padStart(2,"0")} ${h < 12 ? "AM" : "PM"}`;
-    select.insertAdjacentHTML("beforeend", `<option value="${value}">${label}</option>`);
-  }
-}
-fillTimeSelect("pickupTime"); fillTimeSelect("returnTime");
-
-const today = new Date().toISOString().split("T")[0];
-document.getElementById("pickupDate").min = today;
-document.getElementById("returnDate").min = today;
-document.querySelectorAll("[data-picker]").forEach(btn => btn.addEventListener("click", () => {
-  const input = document.getElementById(btn.dataset.picker);
-  if (input.showPicker) input.showPicker(); else input.focus();
-}));
-
-function getData(){ return Object.fromEntries(new FormData(form).entries()); }
-
-async function requestRouteQuote() {
-  const d = getData();
-  if (d.serviceType !== "transfer" || d.route || !d.pickupAddress || !d.dropoffAddress) {
-    customQuote = null;
-    routeInfo.hidden = true;
-    calculate();
-    return;
-  }
-
-  try {
-    const response = await fetch("/api/route-quote", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        pickupAddress:d.pickupAddress,
-        dropoffAddress:d.dropoffAddress,
-        pickupPlaceId:d.pickupPlaceId,
-        dropoffPlaceId:d.dropoffPlaceId,
-        vehicle:d.vehicle,
-        roundTrip:document.getElementById("roundTrip").checked
-      })
-    });
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.error);
-    customQuote = result;
-    document.getElementById("distanceText").textContent = result.distanceText;
-    document.getElementById("durationText").textContent = result.durationText;
-    routeInfo.hidden = false;
-  } catch (e) {
-    customQuote = null;
-    routeInfo.hidden = true;
-  }
-  calculate();
-}
-
-function scheduleQuote() {
-  clearTimeout(quoteTimer);
-  quoteTimer = setTimeout(requestRouteQuote, 500);
-}
-
-function calculate() {
-  const d = getData();
-  const transfer = d.serviceType === "transfer";
-  const vehicle = d.vehicle;
-  let total;
-  if (!transfer) {
-    total = hourly[vehicle] * Math.max(3, Number(d.hours || 3));
-  } else if (d.route) {
-    total = routes[d.route].price + adjustments[vehicle];
-    if (document.getElementById("roundTrip").checked) total *= 2;
-  } else if (customQuote && typeof customQuote.total === "number") {
-    total = customQuote.total;
-  } else {
-    total = null;
-  }
-
-  totalEl.textContent = total == null ? "Pending" : `$${total.toFixed(2)}`;
-  document.getElementById("sumService").textContent = transfer ? "Point-to-Point" : `${Math.max(3, Number(d.hours || 3))} Hour Service`;
-  document.getElementById("sumRoute").textContent = transfer
-    ? (d.route ? routes[d.route].label : (d.pickupAddress && d.dropoffAddress ? `${d.pickupAddress} → ${d.dropoffAddress}` : "Enter addresses"))
-    : "Hourly Chauffeur";
-  document.getElementById("sumVehicle").textContent = vehicle;
-  document.getElementById("sumDate").textContent = d.date ? new Date(d.date+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}) : "Select date";
-  form.querySelector(".payButton").disabled = transfer && !d.route && total == null;
-}
-
-function toggleMode() {
-  const transfer = form.querySelector('input[name="serviceType"]:checked').value === "transfer";
-  routeWrap.hidden = !transfer;
-  pickupWrap.hidden = !transfer;
-  dropoffWrap.hidden = !transfer;
-  roundWrap.hidden = !transfer;
-  hoursWrap.hidden = transfer;
-  if (!transfer) routeInfo.hidden = true;
-  calculate();
-}
-function toggleReturn() {
-  returnFields.hidden = !document.getElementById("roundTrip").checked;
-  document.getElementById("returnDate").required = !returnFields.hidden;
-  document.getElementById("returnTime").required = !returnFields.hidden;
-  if (!getData().route) scheduleQuote();
-  calculate();
-}
-function applyQuickRoute() {
-  const key = quickRoute.value;
-  if (key) {
-    document.getElementById("pickupAddress").value = routes[key].pickup;
-    document.getElementById("dropoffAddress").value = routes[key].dropoff;
-    customQuote = null;
-    routeInfo.hidden = true;
-  } else {
-    document.getElementById("pickupAddress").value = "";
-    document.getElementById("dropoffAddress").value = "";
-  }
-  calculate();
-}
-
-quickRoute.addEventListener("change", applyQuickRoute);
-["pickupAddress","dropoffAddress"].forEach(id => document.getElementById(id).addEventListener("input", () => {
-  if (quickRoute.value) quickRoute.value = "";
-  scheduleQuote();
-}));
-document.addEventListener("ygt-place-selected", scheduleQuote);
-form.addEventListener("input", calculate);
-form.addEventListener("change", () => { toggleMode(); toggleReturn(); if (!getData().route) scheduleQuote(); });
-toggleMode(); toggleReturn();
-
-form.addEventListener("submit", async e => {
-  e.preventDefault();
-  const button = form.querySelector(".payButton");
-  button.disabled = true; button.textContent = "OPENING SECURE CHECKOUT...";
-  const data = getData();
-  data.roundTrip = document.getElementById("roundTrip").checked;
-  try {
-    const response = await fetch("/api/create-checkout", {
-      method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(data)
-    });
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.error || "Checkout failed");
-    location.href = result.url;
-  } catch (err) {
-    alert(err.message); button.disabled = false; button.textContent = "PAY & CONFIRM";
-  }
-});
-
-const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-  if (entry.isIntersecting) entry.target.classList.add("visible");
-}), {threshold:.12});
-document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+const hourly3={"Luxury Sedan":299,"Chevrolet Suburban":339,"Cadillac Escalade ESV":379,"Mercedes-Benz S-Class":499,"Passenger Sprinter":389,"Executive Sprinter":479};
+const vehicles=[
+{name:"Luxury Sedan",image:"assets/sedan.jpg",passengers:2,bags:3,subtitle:"Premium made accessible"},
+{name:"Chevrolet Suburban",image:"assets/suburban.jpg",passengers:6,bags:6,subtitle:"Full-size luxury SUV",popular:true},
+{name:"Cadillac Escalade ESV",image:"assets/escalade.jpg",passengers:6,bags:6,subtitle:"Flagship luxury SUV"},
+{name:"Mercedes-Benz S-Class",image:"assets/sclass.jpg",passengers:2,bags:3,subtitle:"First-class executive sedan"},
+{name:"Passenger Sprinter",image:"assets/passenger-van.jpg",passengers:10,bags:10,subtitle:"Comfortable group transportation"},
+{name:"Executive Sprinter",image:"assets/executive-van.jpg",passengers:14,bags:14,subtitle:"Premium group travel"}
+];
+const routeLabels={"mia-miami-beach":"MIA → Miami Beach","mia-fll":"MIA → FLL","fll-local":"FLL → Fort Lauderdale Area"};
+const routeAddresses={"mia-miami-beach":["Miami International Airport (MIA), Miami, FL","Miami Beach, FL"],"mia-fll":["Miami International Airport (MIA), Miami, FL","Fort Lauderdale-Hollywood International Airport (FLL), Fort Lauderdale, FL"],"fll-local":["Fort Lauderdale-Hollywood International Airport (FLL), Fort Lauderdale, FL","Fort Lauderdale, FL"]};
+let currentStep=1,selectedVehicle="";
+const form=document.getElementById("bookingForm"),quickRoute=document.getElementById("quickRoute"),vehicleInput=document.getElementById("vehicleInput");
+function fillTimes(id){const s=document.getElementById(id);s.innerHTML='<option value="">Select time</option>';for(let h=0;h<24;h++)for(let m of[0,30]){const v=`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;s.insertAdjacentHTML("beforeend",`<option value="${v}">${h%12||12}:${String(m).padStart(2,"0")} ${h<12?"AM":"PM"}</option>`);}}fillTimes("pickupTime");fillTimes("returnTime");
+const today=new Date().toISOString().split("T")[0];pickupDate.min=today;returnDate.min=today;
+function serviceType(){return form.querySelector('input[name="serviceType"]:checked').value;}
+function tripPrice(vehicle){if(serviceType()==="hourly"){const hrs=Math.max(3,Number(form.hours.value||3));return Math.round(hourly3[vehicle]/3*hrs);}const route=quickRoute.value;if(route&&pricing[route])return pricing[route][vehicle];return null;}
+function renderVehicles(){const grid=document.getElementById("vehicleGrid");grid.innerHTML="";vehicles.forEach(v=>{const price=tripPrice(v.name);const card=document.createElement("article");card.className="vehicleCard"+(selectedVehicle===v.name?" selected":"");card.innerHTML=`<div class="vehicleImage"><img src="${v.image}" alt="${v.name}"></div><div class="vehicleBody"><div class="vehicleTop"><h4>${v.name}</h4>${v.popular?'<span class="badge">Most Popular</span>':''}</div><div class="vehicleSubtitle">${v.subtitle}</div><div class="vehiclePrice">${price?`$${price.toFixed(2)}`:"Custom quote"}<small>All-inclusive price</small></div><div class="green">✓ Final Price – No Hidden Fees</div><div class="capacity"><span>Up to ${v.passengers} passengers</span><span>Up to ${v.bags} bags</span></div><div class="included">✓ Flight tracking<br>✓ Complimentary water<br>✓ Phone charger<br>✓ Airport wait time<br>✓ Child seat on request</div><button class="selectVehicle" type="button">Select Vehicle</button></div>`;card.querySelector("button").onclick=()=>{selectedVehicle=v.name;vehicleInput.value=v.name;renderVehicles();updateSummary();};grid.appendChild(card);});}
+function showStep(n){if(n===2&&!validateStep1())return;if(n===3&&!selectedVehicle){alert("Please select a vehicle.");return;}currentStep=n;document.querySelectorAll(".wizardStep").forEach(s=>s.classList.toggle("active",Number(s.dataset.step)===n));document.querySelectorAll(".stepDot").forEach((d,i)=>{d.classList.toggle("active",i+1===n);d.classList.toggle("done",i+1<n);});progressFill.style.width=`${(n-1)*50}%`;if(n===2)renderVehicles();updateSummary();document.getElementById("booking").scrollIntoView({behavior:"smooth",block:"start"});}
+function validateStep1(){const type=serviceType();if(type==="transfer"&&(!pickupAddress.value||!dropoffAddress.value)){alert("Please enter pickup and drop-off.");return false;}if(!pickupDate.value||!pickupTime.value){alert("Please choose date and time.");return false;}return true;}
+document.querySelectorAll("[data-next]").forEach(b=>b.onclick=()=>showStep(Number(b.dataset.next)));document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>showStep(Number(b.dataset.back)));document.querySelectorAll("[data-step-go]").forEach(b=>b.onclick=()=>{const n=Number(b.dataset.stepGo);if(n<=currentStep)showStep(n);});
+function toggleMode(){const t=serviceType()==="transfer";quickRouteWrap.hidden=!t;pickupWrap.hidden=!t;dropoffWrap.hidden=!t;roundWrap.hidden=!t;hoursWrap.hidden=t;renderVehicles();updateSummary();}
+function toggleReturn(){returnFields.hidden=!roundTrip.checked;returnDate.required=roundTrip.checked;returnTime.required=roundTrip.checked;}
+form.addEventListener("change",()=>{toggleMode();toggleReturn();updateSummary();});form.addEventListener("input",updateSummary);toggleMode();toggleReturn();
+quickRoute.addEventListener("change",()=>{const r=routeAddresses[quickRoute.value];if(r){pickupAddress.value=r[0];dropoffAddress.value=r[1];}updateSummary();});
+function updateSummary(){const d=Object.fromEntries(new FormData(form).entries());sumService.textContent=serviceType()==="hourly"?`${Math.max(3,Number(d.hours||3))} Hour Service`:(roundTrip.checked?"Round Trip":"Point-to-Point");sumRoute.textContent=serviceType()==="hourly"?"Hourly Chauffeur":quickRoute.value?routeLabels[quickRoute.value]:(d.pickupAddress&&d.dropoffAddress?`${d.pickupAddress} → ${d.dropoffAddress}`:"—");sumDate.textContent=d.date?new Date(d.date+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}):"—";sumVehicle.textContent=selectedVehicle||"—";const p=selectedVehicle?tripPrice(selectedVehicle):null;total.textContent=p?`$${(roundTrip.checked&&serviceType()==="transfer"?p*2:p).toFixed(2)}`:"—";}
+form.addEventListener("submit",async e=>{e.preventDefault();if(!selectedVehicle)return;const btn=form.querySelector(".payButton");btn.disabled=true;btn.textContent="OPENING SECURE CHECKOUT...";const data=Object.fromEntries(new FormData(form).entries());data.roundTrip=roundTrip.checked;try{const r=await fetch("/api/create-checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});const j=await r.json();if(!r.ok)throw new Error(j.error||"Checkout failed");location.href=j.url;}catch(err){alert(err.message);btn.disabled=false;btn.textContent="PAY & CONFIRM";}});

@@ -1,28 +1,17 @@
-YGT EXECUTIVE LIMO — MAPS V5
+YGT EXECUTIVE LIMO — WIZARD V6
 
 Included:
-- Google Places address autocomplete
-- Pickup and drop-off inputs
-- Google Routes distance and estimated drive time
-- Existing fixed-route prices
-- Configurable pricing for custom routes
-- Server-side price recalculation before Stripe Checkout
-- Larger logo, calendar picker, time selector and reservation summary
-- Sample/fake testimonials removed
+- 3-step booking flow
+- Trip details → vehicle cards → customer details & Stripe
+- Separate Suburban, Escalade, S-Class and Sprinter categories
+- Current fixed route pricing
+- 3-hour minimum hourly pricing
+- Large vehicle cards with capacity and included amenities
+- Larger logo and premium black/gold design
 
-Required Vercel environment variables:
+Upload every file and folder in this extracted folder to the GitHub repository root.
+Keep your Vercel environment variables:
 STRIPE_SECRET_KEY
 NEXT_PUBLIC_SITE_URL
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 GOOGLE_MAPS_SERVER_API_KEY
-
-For automatic custom-route pricing also add:
-CUSTOM_ROUTE_SUV_MINIMUM
-CUSTOM_ROUTE_SUV_PER_MILE
-
-Google Cloud:
-Enable Maps JavaScript API, Places API and Routes API.
-Restrict the browser key by HTTP referrer to your Vercel/domain URLs.
-Restrict the server key to Routes API.
-
-Upload all contents of this extracted folder to the GitHub repository root.
