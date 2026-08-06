@@ -1,17 +1,12 @@
-YGT EXECUTIVE LIMO — WIZARD V6
+YGT EXECUTIVE LIMO — WIZARD V7
 
-Included:
-- 3-step booking flow
-- Trip details → vehicle cards → customer details & Stripe
-- Separate Suburban, Escalade, S-Class and Sprinter categories
-- Current fixed route pricing
-- 3-hour minimum hourly pricing
-- Large vehicle cards with capacity and included amenities
-- Larger logo and premium black/gold design
+Changes:
+- Correct Mercedes-Benz S-Class photo
+- New Executive Sprinter photo
+- Rolls-Royce Ghost added as an exclusive availability-request vehicle
+- Selecting any vehicle now advances directly to Step 3
+- Redundant Continue button removed
+- Rolls-Royce availability request opens WhatsApp instead of Stripe
+- Photo credits included
 
-Upload every file and folder in this extracted folder to the GitHub repository root.
-Keep your Vercel environment variables:
-STRIPE_SECRET_KEY
-NEXT_PUBLIC_SITE_URL
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-GOOGLE_MAPS_SERVER_API_KEY
+Upload all files and folders to the GitHub repository root and replace existing files.
