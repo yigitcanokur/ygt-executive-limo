@@ -141,3 +141,6 @@
 .routeLiveCard[hidden]{display:none}.routeLiveCard span{display:block;color:#777;font-size:9px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}.routeLiveCard strong{color:#eee}.routeMetric strong{color:var(--gold2);font:19px Georgia}
 .goldBtn,.payButton,.headerBook{transition:transform .2s ease,box-shadow .2s ease}.goldBtn:hover,.payButton:hover,.headerBook:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(216,173,82,.15)}
 @media(max-width:700px){.header .logo{width:175px!important}.routeLiveCard{grid-template-columns:1fr 1fr}.routeLiveMain{grid-column:1/-1}.vehicleCard:hover{transform:none}}
+
+/* V14.1 — keep Google validation internal; no technical helper text for customers */
+.locationHelper:empty,.googleLocationHelper:empty,[data-google-location-helper]:empty{display:none!important}

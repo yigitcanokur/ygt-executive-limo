@@ -1,8 +1,13 @@
-YGT Executive Limo V14
-Luxury UI polish:
-- Larger logo
-- Premium vehicle card hover effects
-- Live route summary on vehicle selection step
-- Google distance and estimated travel time
-- Improved mobile presentation
-- All V13.1 pricing fixes retained
+YGT Executive Limo V14.1
+
+Change:
+- Removed customer-facing “Google-verified location required” text.
+- Google Places autocomplete and address verification remain active in the background.
+- Customers can use the address fields normally without seeing technical Google validation wording.
+
+Upload:
+- index.html
+- script.js
+- styles.css
+
+Or upload the complete package.
