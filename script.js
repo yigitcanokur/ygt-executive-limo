@@ -2,27 +2,83 @@
 const fixedPricing = {
   "mia-miami-beach": {
     "Luxury Sedan": 105,
-    "Chevrolet Suburban": 118,
-    "Cadillac Escalade ESV": 149,
-    "Mercedes-Benz S-Class": 199,
-    "Passenger Sprinter": 205,
-    "Executive Sprinter": 260
+    "Chevrolet Suburban": 120,
+    "Cadillac Escalade ESV": 145,
+    "Mercedes-Benz S-Class": 180,
+    "Passenger Sprinter": 250,
+    "Executive Sprinter": 295
+  },
+  "mia-portmiami": {
+    "Luxury Sedan": 105,
+    "Chevrolet Suburban": 120,
+    "Cadillac Escalade ESV": 145,
+    "Mercedes-Benz S-Class": 180,
+    "Passenger Sprinter": 250,
+    "Executive Sprinter": 295
   },
   "mia-fll": {
-    "Luxury Sedan": 145,
-    "Chevrolet Suburban": 169,
-    "Cadillac Escalade ESV": 215,
-    "Mercedes-Benz S-Class": 199,
-    "Passenger Sprinter": 245,
-    "Executive Sprinter": 280
+    "Luxury Sedan": 139,
+    "Chevrolet Suburban": 168,
+    "Cadillac Escalade ESV": 205,
+    "Mercedes-Benz S-Class": 240,
+    "Passenger Sprinter": 340,
+    "Executive Sprinter": 395
   },
-  "fll-local": {
-    "Luxury Sedan": 104,
-    "Chevrolet Suburban": 117,
-    "Cadillac Escalade ESV": 149,
-    "Mercedes-Benz S-Class": 179,
-    "Passenger Sprinter": 195,
-    "Executive Sprinter": 225
+  "fll-miami-beach": {
+    "Luxury Sedan": 150,
+    "Chevrolet Suburban": 170,
+    "Cadillac Escalade ESV": 215,
+    "Mercedes-Benz S-Class": 250,
+    "Passenger Sprinter": 355,
+    "Executive Sprinter": 410
+  },
+  "fll-portmiami": {
+    "Luxury Sedan": 150,
+    "Chevrolet Suburban": 170,
+    "Cadillac Escalade ESV": 215,
+    "Mercedes-Benz S-Class": 250,
+    "Passenger Sprinter": 355,
+    "Executive Sprinter": 410
+  },
+  "mia-boca": {
+    "Luxury Sedan": 170,
+    "Chevrolet Suburban": 210,
+    "Cadillac Escalade ESV": 245,
+    "Mercedes-Benz S-Class": 295,
+    "Passenger Sprinter": 430,
+    "Executive Sprinter": 485
+  },
+  "fll-boca": {
+    "Luxury Sedan": 135,
+    "Chevrolet Suburban": 165,
+    "Cadillac Escalade ESV": 195,
+    "Mercedes-Benz S-Class": 235,
+    "Passenger Sprinter": 350,
+    "Executive Sprinter": 395
+  },
+  "mia-west-palm": {
+    "Luxury Sedan": 205,
+    "Chevrolet Suburban": 260,
+    "Cadillac Escalade ESV": 300,
+    "Mercedes-Benz S-Class": 350,
+    "Passenger Sprinter": 520,
+    "Executive Sprinter": 595
+  },
+  "fll-west-palm": {
+    "Luxury Sedan": 175,
+    "Chevrolet Suburban": 220,
+    "Cadillac Escalade ESV": 255,
+    "Mercedes-Benz S-Class": 300,
+    "Passenger Sprinter": 470,
+    "Executive Sprinter": 540
+  },
+  "mia-orlando": {
+    "Luxury Sedan": 525,
+    "Chevrolet Suburban": 650,
+    "Cadillac Escalade ESV": 750,
+    "Mercedes-Benz S-Class": 850,
+    "Passenger Sprinter": 1150,
+    "Executive Sprinter": 1300
   }
 };
 
@@ -212,41 +268,82 @@ function normalize(value) {
   return String(value || "").toLowerCase();
 }
 
-function detectFixedRoute() {
-  const pickup = normalize(pickupAddress.value);
-  const dropoff = normalize(dropoffAddress.value);
+function detectZone(value) {
+  const v = normalize(value);
 
-  const isMia = value =>
-    value.includes("miami international airport") ||
-    value.includes("(mia)") ||
-    value.includes("2100 nw 42nd");
+  if (
+    v.includes("miami international airport") ||
+    v.includes("(mia)") ||
+    v.includes("2100 nw 42nd")
+  ) return "mia";
 
-  const isFll = value =>
-    value.includes("fort lauderdale-hollywood international airport") ||
-    value.includes("(fll)") ||
-    value.includes("100 terminal dr");
+  if (
+    v.includes("fort lauderdale-hollywood international airport") ||
+    v.includes("(fll)") ||
+    v.includes("100 terminal dr")
+  ) return "fll";
 
-  const isMiamiBeach = value =>
-    value.includes("miami beach") ||
-    value.includes("fontainebleau") ||
-    value.includes("collins avenue") ||
-    value.includes("collins ave");
+  if (
+    v.includes("portmiami") ||
+    v.includes("port of miami") ||
+    v.includes("dodge island") ||
+    v.includes("cruise terminal")
+  ) return "portmiami";
 
-  const isFortLauderdale = value =>
-    value.includes("fort lauderdale") ||
-    value.includes("las olas") ||
-    value.includes("hollywood, fl");
+  if (
+    v.includes("miami beach") ||
+    v.includes("fontainebleau") ||
+    v.includes("faena") ||
+    v.includes("w south beach") ||
+    v.includes("1 hotel south beach") ||
+    v.includes("loews miami beach") ||
+    v.includes("eden roc") ||
+    v.includes("collins avenue") ||
+    v.includes("collins ave")
+  ) return "miami-beach";
 
-  if ((isMia(pickup) && isMiamiBeach(dropoff)) || (isMia(dropoff) && isMiamiBeach(pickup))) {
-    return "mia-miami-beach";
-  }
-  if ((isMia(pickup) && isFll(dropoff)) || (isMia(dropoff) && isFll(pickup))) {
-    return "mia-fll";
-  }
-  if ((isFll(pickup) && isFortLauderdale(dropoff)) || (isFll(dropoff) && isFortLauderdale(pickup))) {
-    return "fll-local";
-  }
+  if (
+    v.includes("boca raton") ||
+    v.includes("mizner park")
+  ) return "boca";
+
+  if (
+    v.includes("west palm beach") ||
+    v.includes("palm beach international airport") ||
+    v.includes("(pbi)") ||
+    v.includes("palm beach, fl")
+  ) return "west-palm";
+
+  if (
+    v.includes("orlando") ||
+    v.includes("orlando international airport") ||
+    v.includes("(mco)") ||
+    v.includes("disney world") ||
+    v.includes("universal orlando")
+  ) return "orlando";
+
   return "";
+}
+
+function detectFixedRoute() {
+  const pickupZone = detectZone(pickupAddress.value);
+  const dropoffZone = detectZone(dropoffAddress.value);
+  const pair = [pickupZone, dropoffZone].sort().join("|");
+
+  const routeMap = {
+    "mia|miami-beach": "mia-miami-beach",
+    "mia|portmiami": "mia-portmiami",
+    "fll|mia": "mia-fll",
+    "fll|miami-beach": "fll-miami-beach",
+    "fll|portmiami": "fll-portmiami",
+    "boca|mia": "mia-boca",
+    "boca|fll": "fll-boca",
+    "mia|west-palm": "mia-west-palm",
+    "fll|west-palm": "fll-west-palm",
+    "mia|orlando": "mia-orlando"
+  };
+
+  return routeMap[pair] || "";
 }
 
 async function requestRouteQuote() {
@@ -454,10 +551,23 @@ function updateSummary() {
       ? `${Math.max(3, Number(data.hours || 3))} Hour Service`
       : (document.getElementById("roundTrip").checked ? "Round Trip" : "Point-to-Point");
 
+  const detectedRouteKey = serviceType() === "transfer" ? detectFixedRoute() : "";
+  const fixedRouteLabels = {
+    "mia-miami-beach":"MIA ↔ Miami Beach",
+    "mia-portmiami":"MIA ↔ PortMiami",
+    "mia-fll":"MIA ↔ FLL",
+    "fll-miami-beach":"FLL ↔ Miami Beach",
+    "fll-portmiami":"FLL ↔ PortMiami",
+    "mia-boca":"MIA ↔ Boca Raton",
+    "fll-boca":"FLL ↔ Boca Raton",
+    "mia-west-palm":"MIA ↔ West Palm Beach",
+    "fll-west-palm":"FLL ↔ West Palm Beach",
+    "mia-orlando":"MIA ↔ Orlando"
+  };
   document.getElementById("sumRoute").textContent =
     serviceType() === "hourly"
       ? "Hourly Chauffeur"
-      : (data.pickupAddress && data.dropoffAddress ? `${data.pickupAddress} → ${data.dropoffAddress}` : "—");
+      : (detectedRouteKey ? fixedRouteLabels[detectedRouteKey] : (data.pickupAddress && data.dropoffAddress ? `${data.pickupAddress} → ${data.dropoffAddress}` : "—"));
 
   const pickupDateText = data.date
     ? new Date(data.date + "T12:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"})
