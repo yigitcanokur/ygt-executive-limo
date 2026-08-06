@@ -30,9 +30,13 @@
       <div class="stepHeading"><span>Step 1</span><h3>Where and when are you traveling?</h3></div>
       <div class="serviceTabs"><label><input type="radio" name="serviceType" value="transfer" checked><span>Point-to-Point</span></label><label><input type="radio" name="serviceType" value="hourly"><span>Hourly</span></label></div>
       <div class="formGrid">
-        <label id="quickRouteWrap" class="field wide"><span>Quick route</span><select name="route" id="quickRoute"><option value="">Custom addresses</option><option value="mia-miami-beach">MIA → Miami Beach</option><option value="mia-fll">MIA → FLL</option><option value="fll-local">FLL → Fort Lauderdale Area</option></select></label>
-        <label id="pickupWrap" class="field wide"><span>Pickup address</span><input id="pickupAddress" name="pickupAddress" required placeholder="Airport, hotel, port or full address" autocomplete="off"><input id="pickupPlaceId" name="pickupPlaceId" type="hidden"></label>
-        <label id="dropoffWrap" class="field wide"><span>Drop-off address</span><input id="dropoffAddress" name="dropoffAddress" required placeholder="Airport, hotel, port or full address" autocomplete="off"><input id="dropoffPlaceId" name="dropoffPlaceId" type="hidden"></label>
+        
+        <label id="pickupWrap" class="field wide"><span>Pickup location</span><input id="pickupAddress" name="pickupAddress" required placeholder="Start typing and select a Google location" autocomplete="off"><input id="pickupPlaceId" name="pickupPlaceId" type="hidden"><small class="googleHint">Select one of the Google suggestions.</small></label>
+        <label id="dropoffWrap" class="field wide"><span>Drop-off location</span><input id="dropoffAddress" name="dropoffAddress" required placeholder="Start typing and select a Google location" autocomplete="off"><input id="dropoffPlaceId" name="dropoffPlaceId" type="hidden"><small class="googleHint">Select one of the Google suggestions.</small></label>
+        <div id="routeInfo" class="routeInfo wide" hidden>
+          <div><span>Estimated distance</span><strong id="distanceText">—</strong></div>
+          <div><span>Estimated drive time</span><strong id="durationText">—</strong></div>
+        </div>
         <label id="hoursWrap" class="field" hidden><span>Hours (minimum 3)</span><input name="hours" type="number" min="3" value="3"></label>
         <label class="field"><span>Pickup date</span><input id="pickupDate" required name="date" type="date"></label>
         <label class="field"><span>Pickup time</span><select required name="time" id="pickupTime"></select></label>
@@ -43,7 +47,7 @@
     </section>
 
     <section class="wizardStep" data-step="2">
-      <div class="stepHeading"><span>Step 2</span><h3>Select your vehicle.</h3><p id="quoteHeading">Choose the best fit for your trip.</p></div>
+      <div class="stepHeading"><span>Step 2</span><h3>Select your vehicle.</h3><p id="quoteHeading">Choose the best fit for your trip. Selecting a vehicle takes you directly to the final step.</p></div>
       <div id="vehicleGrid" class="vehicleGrid"></div>
       <input type="hidden" name="vehicle" id="vehicleInput" required>
       <div class="stepActions vehicleBackAction"><button type="button" class="backBtn" data-back="1">Back</button></div>

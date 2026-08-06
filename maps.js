@@ -5,7 +5,10 @@ async function loadGoogleMaps() {
   try {
     const response = await fetch("/api/maps-config");
     const config = await response.json();
-    if (!response.ok || !config.key) return;
+    if (!response.ok || !config.key) {
+      document.dispatchEvent(new CustomEvent("ygt-maps-unavailable"));
+      return;
+    }
 
     await new Promise((resolve, reject) => {
       const script = document.createElement("script");
@@ -23,12 +26,13 @@ async function loadGoogleMaps() {
     const options = {
       componentRestrictions: { country: "us" },
       fields: ["formatted_address", "place_id", "geometry", "name"],
-      locationBias: {
-        north: 27.6,
-        south: 25.0,
-        east: -79.8,
-        west: -81.0
-      }
+      bounds: {
+        north: 27.7,
+        south: 24.8,
+        east: -79.7,
+        west: -81.2
+      },
+      strictBounds: false
     };
 
     [
@@ -36,16 +40,30 @@ async function loadGoogleMaps() {
       ["dropoffAddress", "dropoffPlaceId"]
     ].forEach(([inputId, placeIdId]) => {
       const input = document.getElementById(inputId);
+      const placeIdInput = document.getElementById(placeIdId);
       const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+      input.addEventListener("input", () => {
+        placeIdInput.value = "";
+        input.classList.remove("googleSelected");
+      });
+
       autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
-        document.getElementById(placeIdId).value = place.place_id || "";
-        if (place.formatted_address) input.value = place.formatted_address;
+        if (!place.place_id) {
+          placeIdInput.value = "";
+          input.classList.remove("googleSelected");
+          return;
+        }
+        placeIdInput.value = place.place_id;
+        input.value = place.formatted_address || place.name || input.value;
+        input.classList.add("googleSelected");
         document.dispatchEvent(new CustomEvent("ygt-place-selected"));
       });
     });
   } catch (error) {
     console.warn("Google Maps autocomplete is not active:", error);
+    document.dispatchEvent(new CustomEvent("ygt-maps-unavailable"));
   }
 }
 

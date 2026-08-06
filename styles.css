@@ -6,3 +6,15 @@
 .customQuoteButton{background:transparent!important;color:var(--gold2)!important;border:1px solid var(--gold)!important}
 .vehicleCard .vehicleImage img{transition:transform .35s ease}
 .vehicleCard:hover .vehicleImage img{transform:scale(1.035)}
+
+.googleHint{color:#777;font-size:11px;line-height:1.35;text-transform:none;letter-spacing:0}
+.googleHint.mapsWarning{color:#e9a267}
+.googleSelected{border-color:#4fbf7f!important;box-shadow:0 0 0 3px rgba(79,191,127,.1)!important}
+.routeInfo{display:grid;grid-template-columns:1fr 1fr;gap:12px;border:1px solid var(--line);background:#101010;border-radius:12px;padding:15px}
+.routeInfo div{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.routeInfo span{color:#888;font-size:12px;text-transform:uppercase}
+.routeInfo strong{color:var(--gold2);font-size:14px;text-align:right}
+.pac-container{background:#111;border:1px solid #333;border-radius:10px;box-shadow:0 18px 40px rgba(0,0,0,.55);font-family:Arial,sans-serif;z-index:99999}
+.pac-item{color:#aaa;border-top:1px solid #222;padding:11px;cursor:pointer}
+.pac-item:hover{background:#1a1a1a}.pac-item-query{color:#fff}.pac-icon{display:none}
+@media(max-width:650px){.routeInfo{grid-template-columns:1fr}}
