@@ -33,8 +33,8 @@ const hourly3 = {
   "Chevrolet Suburban":339,
   "Cadillac Escalade ESV":379,
   "Mercedes-Benz S-Class":499,
-  "Passenger Sprinter":389,
-  "Executive Sprinter":479
+  "Passenger Sprinter":525,
+  "Executive Sprinter":615
 };
 
 const vehicleMultipliers = {
