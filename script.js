@@ -315,7 +315,7 @@ function updateSummary() {
 document.addEventListener("ygt-place-selected", scheduleRouteQuote);
 document.addEventListener("ygt-maps-unavailable", () => {
   document.querySelectorAll(".googleHint").forEach(hint => {
-    hint.textContent = "Google location search is not connected yet.";
+    hint.textContent = "Location search is being connected. Please try again shortly." ;
     hint.classList.add("mapsWarning");
   });
 });

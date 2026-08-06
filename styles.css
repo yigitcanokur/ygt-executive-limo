@@ -18,3 +18,33 @@
 .pac-item{color:#aaa;border-top:1px solid #222;padding:11px;cursor:pointer}
 .pac-item:hover{background:#1a1a1a}.pac-item-query{color:#fff}.pac-icon{display:none}
 @media(max-width:650px){.routeInfo{grid-template-columns:1fr}}
+
+/* V9 visual polish */
+.header{height:116px;padding-left:3.25vw;padding-right:3.25vw}
+.brand{display:flex;align-items:center;min-width:300px}
+.logo{width:300px;height:108px;object-fit:contain}
+.headerBook{padding:19px 29px;border-radius:2px}
+.googleHint{display:flex;align-items:center;gap:6px}
+.googleHint:before{content:"✓";color:#4fbf7f;font-weight:800}
+.googleHint.mapsWarning:before{content:"!";color:#e9a267}
+.airportPolicy{margin-top:15px;padding:13px;border:1px solid rgba(216,173,82,.2);border-radius:9px;background:rgba(216,173,82,.06);color:#aaa;font-size:11px;line-height:1.55}
+.mobileBookingBar{display:none}
+.vehicleCard{box-shadow:0 8px 28px rgba(0,0,0,.16)}
+.selectVehicle{transition:transform .2s,background .2s}
+.selectVehicle:hover{transform:translateY(-2px);background:#172746}
+.nextBtn,.payButton,.headerBook,.gold{transition:transform .2s,filter .2s}
+.nextBtn:hover,.payButton:hover,.headerBook:hover,.gold:hover{transform:translateY(-2px);filter:brightness(1.05)}
+@media(max-width:900px){
+  .brand{min-width:unset}
+  .logo{width:210px;height:90px}
+}
+@media(max-width:650px){
+  body{padding-bottom:64px}
+  .header{height:88px;padding:0 13px}
+  .logo{width:178px;height:78px}
+  .headerBook{display:none}
+  .mobileBookingBar{position:fixed;display:grid;grid-template-columns:1fr 1.35fr;left:0;right:0;bottom:0;z-index:100;background:#080808;border-top:1px solid rgba(216,173,82,.35);box-shadow:0 -8px 28px rgba(0,0,0,.45)}
+  .mobileBookingBar a{min-height:62px;display:flex;align-items:center;justify-content:center;text-transform:uppercase;font-weight:900;font-size:13px}
+  .mobileBookingBar a:first-child{color:var(--gold2)}
+  .mobileBookingBar a:last-child{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#080808}
+}

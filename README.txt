@@ -1,29 +1,17 @@
-YGT EXECUTIVE LIMO — WIZARD V8
+YGT EXECUTIVE LIMO — WIZARD V9
 
 Changes:
-- Quick Route / Custom Address selector removed
-- Pickup and drop-off must be selected from Google suggestions
-- Typing after selecting a location clears the verified Google place
-- Distance and estimated drive time displayed
-- Known routes use fixed competitor-based prices
-- Other Google-selected routes use distance-based pricing
-- Price is recalculated securely on the server before Stripe Checkout
-- Selecting a vehicle advances directly to Step 3
-- Rolls-Royce Ghost remains availability-only
+- Logo image tightly cropped and displayed substantially larger
+- Company name beneath the logo is easier to read
+- Friendlier Google connection status
+- Google-verified location helper
+- Airport flight-tracking and waiting-time note
+- Mobile sticky Call / Book Now bar
+- Improved button and vehicle-card interactions
+- Existing 3-step booking, pricing, Google Places, Routes and Stripe logic retained
 
-Required Vercel Environment Variables:
-STRIPE_SECRET_KEY
-NEXT_PUBLIC_SITE_URL
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-GOOGLE_MAPS_SERVER_API_KEY
-
-Optional custom-route controls:
-CUSTOM_ROUTE_SUBURBAN_MINIMUM=95
-CUSTOM_ROUTE_SUBURBAN_PER_MILE=4.25
-
-Google Cloud APIs to enable:
-Maps JavaScript API
-Places API
-Routes API
+Important:
+Google suggestions will not work until the Google API variables are added in Vercel.
+Read GOOGLE-SETUP.txt.
 
 Upload all files and folders to the GitHub repository root.

@@ -1,0 +1,22 @@
+GOOGLE LOCATION SEARCH SETUP
+
+The website code is ready. The warning appears until the following Vercel variables are added:
+
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+GOOGLE_MAPS_SERVER_API_KEY
+
+Also enable these APIs in the same Google Cloud project:
+- Maps JavaScript API
+- Places API
+- Routes API
+
+After adding or changing Vercel environment variables:
+1. Open Vercel > Deployments
+2. Redeploy the latest deployment
+3. Refresh the website
+
+Recommended restrictions:
+- Browser key: restrict by website referrer to
+  https://ygt-executive-limo.vercel.app/*
+  https://ygtexecutivelimo.com/*
+- Server key: restrict to Routes API
