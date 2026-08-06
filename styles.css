@@ -131,3 +131,13 @@
 .emptyState{border:1px dashed #333;padding:50px;text-align:center;color:#777;border-radius:12px}
 @media(max-width:850px){.adminStats{grid-template-columns:repeat(2,1fr)}.bookingAdminGrid{grid-template-columns:1fr 1fr}.adminTop{align-items:flex-start;flex-direction:column}}
 @media(max-width:600px){.adminLoginRow,.adminFilters{grid-template-columns:1fr}.bookingAdminGrid{grid-template-columns:1fr}.bookingAdminHead{flex-direction:column}.adminStats{grid-template-columns:1fr 1fr}}
+
+/* V14 Luxury Polish */
+.header .logo{width:clamp(160px,15vw,240px)!important;height:auto}
+.vehicleCard{position:relative;overflow:hidden;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+.vehicleCard:hover{transform:translateY(-5px);border-color:rgba(216,173,82,.55);box-shadow:0 22px 55px rgba(0,0,0,.38)}
+.vehicleCard img{transition:transform .45s ease}.vehicleCard:hover img{transform:scale(1.025)}
+.routeLiveCard{display:grid;grid-template-columns:1fr auto auto;gap:20px;align-items:center;margin-bottom:20px;padding:18px;border:1px solid #292929;border-radius:12px;background:#101010}
+.routeLiveCard[hidden]{display:none}.routeLiveCard span{display:block;color:#777;font-size:9px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}.routeLiveCard strong{color:#eee}.routeMetric strong{color:var(--gold2);font:19px Georgia}
+.goldBtn,.payButton,.headerBook{transition:transform .2s ease,box-shadow .2s ease}.goldBtn:hover,.payButton:hover,.headerBook:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(216,173,82,.15)}
+@media(max-width:700px){.header .logo{width:175px!important}.routeLiveCard{grid-template-columns:1fr 1fr}.routeLiveMain{grid-column:1/-1}.vehicleCard:hover{transform:none}}

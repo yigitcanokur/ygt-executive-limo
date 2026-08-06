@@ -390,6 +390,19 @@ async function requestRouteQuote() {
   updateSummary();
 }
 
+
+function updateLiveRouteCard() {
+  const card=document.getElementById("routeLiveCard");
+  if(!card)return;
+  if(serviceType()!=="transfer"||!pickupAddress.value||!dropoffAddress.value){card.hidden=true;return;}
+  card.hidden=false;
+  const labels={"mia-miami-beach":"MIA ↔ Miami Beach","mia-portmiami":"MIA ↔ PortMiami","mia-fll":"MIA ↔ Fort Lauderdale","fll-miami-beach":"Fort Lauderdale ↔ Miami Beach","fll-portmiami":"Fort Lauderdale ↔ PortMiami","mia-boca":"MIA ↔ Boca Raton","fll-boca":"Fort Lauderdale ↔ Boca Raton","mia-west-palm":"MIA ↔ West Palm Beach","fll-west-palm":"Fort Lauderdale ↔ West Palm Beach","mia-orlando":"MIA ↔ Orlando"};
+  const key=detectFixedRoute();
+  document.getElementById("routeLiveName").textContent=labels[key]||`${pickupAddress.value} → ${dropoffAddress.value}`;
+  document.getElementById("routeLiveDistance").textContent=routeQuote?.distanceText||"Calculating…";
+  document.getElementById("routeLiveDuration").textContent=routeQuote?.durationText||"Calculating…";
+}
+
 function scheduleRouteQuote() {
   clearTimeout(quoteTimer);
   quoteTimer = setTimeout(requestRouteQuote, 250);
@@ -487,6 +500,7 @@ function showStep(step) {
 
   if (step === 2) {
     if (serviceType() === "transfer") routeKey = detectFixedRoute();
+    updateLiveRouteCard();
     renderVehicles();
   }
   updateSummary();
