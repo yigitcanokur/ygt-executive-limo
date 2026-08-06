@@ -1,14 +1,15 @@
-YGT EXECUTIVE LIMO — V11.1 PRICE FIX
+YGT EXECUTIVE LIMO — V11.2
 
-This patch fixes vehicle cards still showing “Call for availability”.
-
-Fix:
-- Every vehicle card directly re-detects the fixed route from the visible pickup/drop-off addresses.
-- MIA → Fontainebleau / Miami Beach prices no longer depend on an async routeKey.
-- Only Rolls-Royce shows “Call for availability”.
-- Other unknown routes show “Price loading…” while Google route pricing is calculated.
+Changes:
+- The entire pickup-date and return-date box is clickable
+- Users no longer need to click only the calendar icon
+- Date fields show a gold hover/focus state
+- Reservation summary now includes pickup time
+- Round-trip summary includes return date and return time
+- All V11.1 price fixes and V11 email/legal features are retained
 
 Replace only:
 - script.js
+- styles.css
 
 Or upload the full package.

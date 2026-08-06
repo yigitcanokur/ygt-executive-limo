@@ -103,3 +103,9 @@
 .confirmationDetails div{display:flex;justify-content:space-between;gap:20px;padding:14px 16px;border-bottom:1px solid #222}
 .confirmationDetails div:last-child{border-bottom:0}
 .confirmationDetails span{color:#888}.confirmationDetails strong{text-align:right}
+
+/* V11.2 date interaction */
+.dateDisplayWrap{cursor:pointer}
+.dateDisplayWrap>input[type="text"]{cursor:pointer;pointer-events:none}
+.dateDisplayWrap:hover>input[type="text"]{border-color:var(--gold);box-shadow:0 0 0 3px rgba(216,173,82,.08)}
+.dateDisplayWrap:focus-within>input[type="text"]{border-color:var(--gold)}

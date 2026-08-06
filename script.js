@@ -173,7 +173,18 @@ function renderCalendar() {
 }
 
 document.querySelectorAll("[data-date-target]").forEach(button => {
-  button.addEventListener("click", () => openDatePicker(button.dataset.dateTarget));
+  button.addEventListener("click", event => {
+    event.stopPropagation();
+    openDatePicker(button.dataset.dateTarget);
+  });
+});
+
+document.querySelectorAll(".dateDisplayWrap").forEach(wrapper => {
+  wrapper.addEventListener("click", event => {
+    if (event.target.closest(".dateOpenButton")) return;
+    const button = wrapper.querySelector("[data-date-target]");
+    if (button) openDatePicker(button.dataset.dateTarget);
+  });
 });
 document.querySelectorAll("[data-date-close]").forEach(button => {
   button.addEventListener("click", closeDatePicker);
@@ -448,10 +459,16 @@ function updateSummary() {
       ? "Hourly Chauffeur"
       : (data.pickupAddress && data.dropoffAddress ? `${data.pickupAddress} → ${data.dropoffAddress}` : "—");
 
-  document.getElementById("sumDate").textContent =
-    data.date
-      ? new Date(data.date + "T12:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"})
-      : "—";
+  const pickupDateText = data.date
+    ? new Date(data.date + "T12:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"})
+    : "—";
+  const pickupTimeText = data.time
+    ? new Date(`2000-01-01T${data.time}:00`).toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"})
+    : "";
+  const returnText = document.getElementById("roundTrip").checked && data.returnDate
+    ? ` · Return ${new Date(data.returnDate + "T12:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric"})}${data.returnTime ? " " + new Date(`2000-01-01T${data.returnTime}:00`).toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"}) : ""}`
+    : "";
+  document.getElementById("sumDate").textContent = `${pickupDateText}${pickupTimeText ? " · " + pickupTimeText : ""}${returnText}`;
 
   document.getElementById("sumVehicle").textContent = selectedVehicle || "—";
 
