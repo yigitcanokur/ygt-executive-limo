@@ -1,16 +1,14 @@
-YGT EXECUTIVE LIMO — WIZARD V10.2
+YGT EXECUTIVE LIMO — V11.1 PRICE FIX
 
-Fixed:
-- MIA → Fontainebleau / Miami Beach now correctly uses the fixed route prices
-- Vehicle prices no longer reset to “Call for availability” after form changes
-- Route detection recognizes Fontainebleau, Collins Avenue, MIA and FLL variants
-- Server independently verifies the route before creating Stripe Checkout
-- Passenger Sprinter hourly minimum remains $525
-- Executive Sprinter hourly minimum remains $615
+This patch fixes vehicle cards still showing “Call for availability”.
 
-You only need to replace:
+Fix:
+- Every vehicle card directly re-detects the fixed route from the visible pickup/drop-off addresses.
+- MIA → Fontainebleau / Miami Beach prices no longer depend on an async routeKey.
+- Only Rolls-Royce shows “Call for availability”.
+- Other unknown routes show “Price loading…” while Google route pricing is calculated.
+
+Replace only:
 - script.js
-- api/create-checkout.js
-- index.html
 
-Or upload the entire package to the GitHub repository root.
+Or upload the full package.

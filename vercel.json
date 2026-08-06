@@ -5,5 +5,10 @@
       "source": "/api/create-checkout",
       "destination": "/api/create-checkout"
     }
-  ]
+  ],
+  "functions": {
+    "api/stripe-webhook.js": {
+      "includeFiles": "node_modules/stripe/**"
+    }
+  }
 }

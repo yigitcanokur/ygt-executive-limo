@@ -286,8 +286,22 @@ function tripPrice(vehicle) {
     return Math.round((hourly3[vehicle] / 3) * hours);
   }
 
-  if (routeKey && fixedPricing[routeKey]) return fixedPricing[routeKey][vehicle] ?? null;
-  if (routeQuote?.basePrices?.[vehicle] != null) return routeQuote.basePrices[vehicle];
+  // Always detect the fixed route directly from the visible Google-selected addresses.
+  // This prevents prices from disappearing if an async quote or another form event resets routeKey.
+  const detectedRoute = detectFixedRoute();
+  if (detectedRoute && fixedPricing[detectedRoute]) {
+    routeKey = detectedRoute;
+    return fixedPricing[detectedRoute][vehicle] ?? null;
+  }
+
+  if (routeKey && fixedPricing[routeKey]) {
+    return fixedPricing[routeKey][vehicle] ?? null;
+  }
+
+  if (routeQuote?.basePrices?.[vehicle] != null) {
+    return routeQuote.basePrices[vehicle];
+  }
+
   return null;
 }
 
@@ -308,10 +322,10 @@ function renderVehicles() {
         </div>
         <div class="vehicleSubtitle">${vehicle.subtitle}</div>
         <div class="vehiclePrice">
-          ${price != null ? `$${price.toFixed(2)}` : "Call for availability"}
-          <small>${price != null ? "All-inclusive price" : "Custom quote"}</small>
+          ${price != null ? `$${price.toFixed(2)}` : (vehicle.customQuote ? "Call for availability" : "Price loading…")}
+          <small>${price != null ? "All-inclusive price" : (vehicle.customQuote ? "Custom quote" : "Calculating route")}</small>
         </div>
-        <div class="green">${price != null ? "✓ Final Price – No Hidden Fees" : "Exclusive vehicle · availability required"}</div>
+        <div class="green">${price != null ? "✓ Final Price – No Hidden Fees" : (vehicle.customQuote ? "Exclusive vehicle · availability required" : "Google route pricing in progress")}</div>
         <div class="capacity">
           <span>Up to ${vehicle.passengers} passengers</span>
           <span>Up to ${vehicle.bags} bags</span>

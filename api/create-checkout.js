@@ -170,6 +170,7 @@ module.exports = async function handler(req, res) {
       }],
       metadata:{
         reservationId,
+        amountUsd:String(total),
         serviceType:String(body.serviceType || ""),
         routeKey:String(body.routeKey || ""),
         vehicle:String(body.vehicle || ""),
@@ -190,6 +191,14 @@ module.exports = async function handler(req, res) {
         passengers:String(body.passengers || ""),
         luggage:String(body.luggage || ""),
         notes:String(body.notes || "").slice(0,450)
+      },
+      payment_intent_data:{
+        metadata:{
+          reservationId,
+          vehicle:String(body.vehicle || ""),
+          pickupAddress:String(body.pickupAddress || "").slice(0,300),
+          dropoffAddress:String(body.dropoffAddress || "").slice(0,300)
+        }
       }
     });
 
