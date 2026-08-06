@@ -9,7 +9,9 @@ fetch("/api/system-status").then(r=>r.json()).then(s=>{
   ["Stripe checkout",s.stripeKey],
   ["Stripe payment confirmation",s.stripeWebhook],
   ["Booking confirmation email",s.resendKey],
-  ["Website return URL",s.siteUrl]
+  ["Website return URL",s.siteUrl],
+  ["Reservation database",s.supabase],
+  ["Admin dashboard access",s.adminToken]
  ];
  document.getElementById("statusList").innerHTML=items.map(([n,v])=>`<div><span>${n}</span><strong class="${v?"ok":"missing"}">${v?"Connected":"Needs setup"}</strong></div>`).join("");
 });

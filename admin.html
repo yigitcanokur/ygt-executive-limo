@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YGT Admin Dashboard</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="header">
+  <a href="/"><img class="logo" src="assets/logo.png" alt="YGT Executive Limo"></a>
+  <span class="adminTitle">Admin Dashboard</span>
+</header>
+
+<main class="adminPage">
+  <section id="adminLogin" class="adminLogin">
+    <span class="eyebrow">Secure Access</span>
+    <h1>Booking dashboard</h1>
+    <p>Enter the admin token configured in Vercel.</p>
+    <div class="adminLoginRow">
+      <input id="adminToken" type="password" placeholder="Admin token">
+      <button id="adminLoginButton">Open Dashboard</button>
+    </div>
+    <p id="adminError" class="adminError"></p>
+  </section>
+
+  <section id="adminDashboard" hidden>
+    <div class="adminTop">
+      <div><span class="eyebrow">Operations</span><h1>Reservations</h1></div>
+      <div class="adminActions"><button id="refreshBookings">Refresh</button><button id="exportCsv">Export CSV</button></div>
+    </div>
+
+    <div class="adminStats">
+      <article><span>Total</span><strong id="statTotal">0</strong></article>
+      <article><span>New</span><strong id="statNew">0</strong></article>
+      <article><span>Confirmed</span><strong id="statConfirmed">0</strong></article>
+      <article><span>Revenue</span><strong id="statRevenue">$0</strong></article>
+    </div>
+
+    <div class="adminFilters">
+      <input id="bookingSearch" placeholder="Search customer, reservation, route or vehicle">
+      <select id="statusFilter">
+        <option value="">All statuses</option>
+        <option>New</option><option>Confirmed</option><option>Completed</option><option>Cancelled</option>
+      </select>
+    </div>
+
+    <div id="bookingList" class="bookingList"></div>
+  </section>
+</main>
+<script src="admin.js"></script>
+</body></html>

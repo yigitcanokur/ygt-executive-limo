@@ -6,6 +6,8 @@ module.exports = function handler(req, res) {
     stripeKey: Boolean(process.env.STRIPE_SECRET_KEY),
     stripeWebhook: Boolean(process.env.STRIPE_WEBHOOK_SECRET),
     resendKey: Boolean(process.env.RESEND_API_KEY),
-    siteUrl: Boolean(process.env.NEXT_PUBLIC_SITE_URL)
+    siteUrl: Boolean(process.env.NEXT_PUBLIC_SITE_URL),
+    supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY),
+    adminToken: Boolean(process.env.ADMIN_DASHBOARD_TOKEN)
   });
 };

@@ -1,6 +1,7 @@
 
 const Stripe = require("stripe");
 const { Resend } = require("resend");
+const { getAdminClient } = require("./_db");
 
 function money(cents) {
   return new Intl.NumberFormat("en-US", {
@@ -35,6 +36,50 @@ function reservationTable(session) {
       ${row("Special requests", m.notes)}
       ${row("Paid", money(session.amount_total))}
     </table>`;
+}
+
+
+async function saveBooking(session) {
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.log("Supabase is not configured; skipping booking storage.");
+    return;
+  }
+
+  const m = session.metadata || {};
+  const supabase = getAdminClient();
+  const payload = {
+    reservation_id: m.reservationId || session.id,
+    stripe_session_id: session.id,
+    payment_status: session.payment_status || "paid",
+    amount_total: session.amount_total || 0,
+    currency: session.currency || "usd",
+    customer_name: m.name || "",
+    customer_email: session.customer_details?.email || session.customer_email || "",
+    customer_phone: m.phone || "",
+    service_type: m.serviceType || "",
+    route_key: m.routeKey || "",
+    vehicle: m.vehicle || "",
+    pickup_address: m.pickupAddress || "",
+    dropoff_address: m.dropoffAddress || "",
+    pickup_date: m.date || "",
+    pickup_time: m.time || "",
+    return_date: m.returnDate || "",
+    return_time: m.returnTime || "",
+    flight: m.flight || "",
+    airline: m.airline || "",
+    pickup_style: m.pickupStyle || "",
+    child_seat: m.childSeat || "",
+    passengers: m.passengers || "",
+    luggage: m.luggage || "",
+    notes: m.notes || "",
+    status: "New"
+  };
+
+  const { error } = await supabase
+    .from("bookings")
+    .upsert(payload, { onConflict: "stripe_session_id" });
+
+  if (error) throw error;
 }
 
 async function sendEmails(session) {
@@ -106,6 +151,7 @@ module.exports = async function handler(req, res) {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
       if (session.payment_status === "paid") {
+        await saveBooking(session);
         await sendEmails(session);
         console.log("PAID RESERVATION", session.metadata?.reservationId);
       }
