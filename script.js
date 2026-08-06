@@ -280,7 +280,16 @@ function detectZone(value) {
   if (
     v.includes("fort lauderdale-hollywood international airport") ||
     v.includes("(fll)") ||
-    v.includes("100 terminal dr")
+    v.includes("100 terminal dr") ||
+    v.includes("fort lauderdale beach") ||
+    v.includes("w fort lauderdale") ||
+    v.includes("w hotel fort lauderdale") ||
+    v.includes("las olas") ||
+    v.includes("seabreeze boulevard") ||
+    v.includes("seabreeze blvd") ||
+    v.includes("north fort lauderdale beach boulevard") ||
+    v.includes("n fort lauderdale beach blvd") ||
+    v.includes("fort lauderdale, fl")
   ) return "fll";
 
   if (

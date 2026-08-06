@@ -41,7 +41,7 @@ function detectZone(value) {
   const v = normalize(value);
 
   if (v.includes("miami international airport") || v.includes("(mia)") || v.includes("2100 nw 42nd")) return "mia";
-  if (v.includes("fort lauderdale-hollywood international airport") || v.includes("(fll)") || v.includes("100 terminal dr")) return "fll";
+  if (v.includes("fort lauderdale-hollywood international airport") || v.includes("(fll)") || v.includes("100 terminal dr") || v.includes("fort lauderdale beach") || v.includes("w fort lauderdale") || v.includes("w hotel fort lauderdale") || v.includes("las olas") || v.includes("seabreeze boulevard") || v.includes("seabreeze blvd") || v.includes("north fort lauderdale beach boulevard") || v.includes("n fort lauderdale beach blvd") || v.includes("fort lauderdale, fl")) return "fll";
   if (v.includes("portmiami") || v.includes("port of miami") || v.includes("dodge island") || v.includes("cruise terminal")) return "portmiami";
   if (v.includes("miami beach") || v.includes("fontainebleau") || v.includes("faena") || v.includes("w south beach") || v.includes("1 hotel south beach") || v.includes("loews miami beach") || v.includes("eden roc") || v.includes("collins avenue") || v.includes("collins ave")) return "miami-beach";
   if (v.includes("boca raton") || v.includes("mizner park")) return "boca";

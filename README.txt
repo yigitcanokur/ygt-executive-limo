@@ -1,27 +1,23 @@
-YGT EXECUTIVE LIMO — WIZARD V13 OPERATIONS
+YGT EXECUTIVE LIMO — V13.1 FORT LAUDERDALE ZONE FIX
 
-New:
-- Paid Stripe reservations stored in Supabase
-- Admin dashboard at /admin.html
-- Dashboard search and status filters
-- Booking status: New / Confirmed / Completed / Cancelled
-- Revenue summary
-- CSV export
-- Stripe webhook remains the source of truth
-- Customer and owner confirmation emails retained
-- Existing zone pricing, Google Places, calendar and vehicle wizard retained
+Fixed:
+- W Fort Lauderdale is now recognized as the Fort Lauderdale/FLL pricing zone
+- Fort Lauderdale Beach hotels are included
+- Las Olas addresses are included
+- Seabreeze Boulevard and N Fort Lauderdale Beach Boulevard are included
+- MIA ↔ these Fort Lauderdale locations now use the fixed MIA ↔ FLL prices
 
-Required:
-1. Create a Supabase project
-2. Run SUPABASE-SETUP.sql in Supabase SQL Editor
-3. Add these Vercel variables:
-   SUPABASE_URL
-   SUPABASE_SERVICE_ROLE_KEY
-   ADMIN_DASHBOARD_TOKEN
+Expected MIA ↔ Fort Lauderdale prices:
+- Luxury Sedan: $139
+- Chevrolet Suburban: $168
+- Cadillac Escalade ESV: $205
+- Mercedes-Benz S-Class: $240
+- Passenger Sprinter: $340
+- Executive Sprinter: $395
 
-Admin URL:
-https://ygt-executive-limo.vercel.app/admin.html
+Replace only:
+- script.js
+- api/create-checkout.js
+- api/route-quote.js
 
-Important:
-Never place SUPABASE_SERVICE_ROLE_KEY in GitHub or browser code.
-Upload all files/folders to the GitHub repository root.
+Or upload the complete package.
