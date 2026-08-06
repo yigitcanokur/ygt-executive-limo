@@ -38,10 +38,22 @@
           <div><span>Estimated drive time</span><strong id="durationText">—</strong></div>
         </div>
         <label id="hoursWrap" class="field" hidden><span>Hours (minimum 3)</span><input name="hours" type="number" min="3" value="3"></label>
-        <label class="field"><span>Pickup date</span><input id="pickupDate" required name="date" type="date"></label>
+        <label class="field dateField"><span>Pickup date</span>
+      <div class="dateDisplayWrap">
+        <input id="pickupDateDisplay" type="text" readonly placeholder="Select date">
+        <input id="pickupDate" required name="date" type="hidden">
+        <button type="button" class="dateOpenButton" data-date-target="pickupDate">▦</button>
+      </div>
+    </label>
         <label class="field"><span>Pickup time</span><select required name="time" id="pickupTime"></select></label>
         <label id="roundWrap" class="toggleField"><input id="roundTrip" name="roundTrip" type="checkbox"><span class="toggle"></span><span>Round trip</span></label>
-        <div id="returnFields" class="returnFields" hidden><label class="field"><span>Return date</span><input id="returnDate" name="returnDate" type="date"></label><label class="field"><span>Return time</span><select name="returnTime" id="returnTime"></select></label></div>
+        <div id="returnFields" class="returnFields" hidden><label class="field dateField"><span>Return date</span>
+      <div class="dateDisplayWrap">
+        <input id="returnDateDisplay" type="text" readonly placeholder="Select return date">
+        <input id="returnDate" name="returnDate" type="hidden">
+        <button type="button" class="dateOpenButton" data-date-target="returnDate">▦</button>
+      </div>
+    </label><label class="field"><span>Return time</span><select name="returnTime" id="returnTime"></select></label></div>
       </div>
       <div class="stepActions"><button type="button" class="nextBtn" data-next="2">See Vehicles</button></div>
     </section>
@@ -82,6 +94,27 @@
 <section class="fbo" id="services"><div class="fboShade"></div><div><span class="eyebrow">Private Aviation</span><h2>Discreet service for FBO arrivals and departures.</h2></div></section>
 <section class="cta" id="contact"><span class="eyebrow">Ready when you are</span><h2>Reserve your next ride with YGT Executive Limo.</h2><div class="actions center"><a class="btn gold" href="#booking">Book Now</a><a class="btn outline" href="tel:+12018971912">(201) 897-1912</a><a class="btn outline" href="https://instagram.com/ygtlimo">@ygtlimo</a></div></section>
 </main>
-<footer><div><img src="assets/logo.png" alt="YGT Executive Limo"><p>Luxury chauffeur service in Miami and throughout South Florida.</p></div><div><strong>Contact</strong><a href="tel:+12018971912">(201) 897-1912</a><a href="mailto:yigitcanflorida@gmail.com">yigitcanflorida@gmail.com</a></div><small>© 2026 YGT Executive Limo LLC. All rights reserved. Vehicle reference photos: Wikimedia Commons contributors, CC BY-SA 4.0.</small></footer><div class="mobileBookingBar"><a href="tel:+12018971912">Call</a><a href="#booking">Book Now</a></div>
+<footer><div><img src="assets/logo.png" alt="YGT Executive Limo"><p>Luxury chauffeur service in Miami and throughout South Florida.</p></div><div><strong>Contact</strong><a href="tel:+12018971912">(201) 897-1912</a><a href="mailto:yigitcanflorida@gmail.com">yigitcanflorida@gmail.com</a></div><small><a href="/setup.html" class="setupLink">System status</a> · © 2026 YGT Executive Limo LLC. All rights reserved. Vehicle reference photos: Wikimedia Commons contributors, CC BY-SA 4.0.</small></footer><div class="mobileBookingBar"><a href="tel:+12018971912">Call</a><a href="#booking">Book Now</a></div>
+
+<div id="datePickerModal" class="datePickerModal" hidden>
+  <div class="datePickerBackdrop" data-date-close></div>
+  <section class="datePickerPanel" role="dialog" aria-modal="true" aria-label="Choose a date">
+    <header class="datePickerHeader">
+      <button type="button" id="datePrev" aria-label="Previous month">‹</button>
+      <div>
+        <strong id="dateMonthLabel"></strong>
+        <span>Select your travel date</span>
+      </div>
+      <button type="button" id="dateNext" aria-label="Next month">›</button>
+    </header>
+    <div class="dateWeekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+    <div id="dateGrid" class="dateGrid"></div>
+    <footer class="datePickerFooter">
+      <button type="button" class="dateCancel" data-date-close>Cancel</button>
+      <button type="button" id="dateToday" class="dateToday">Today</button>
+    </footer>
+  </section>
+</div>
+
 <script src="maps.js"></script><script src="script.js"></script>
 </body></html>

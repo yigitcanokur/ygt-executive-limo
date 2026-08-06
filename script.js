@@ -71,11 +71,127 @@ function fillTimes(id) {
   }
 }
 fillTimes("pickupTime");
-fillTimes("returnTime");
 
-const today = new Date().toISOString().split("T")[0];
-document.getElementById("pickupDate").min = today;
-document.getElementById("returnDate").min = today;
+/* Custom YGT date picker */
+const dateModal = document.getElementById("datePickerModal");
+const dateGrid = document.getElementById("dateGrid");
+const dateMonthLabel = document.getElementById("dateMonthLabel");
+let activeDateTarget = null;
+let calendarCursor = new Date();
+calendarCursor.setDate(1);
+
+function isoDate(date) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
+}
+
+function formatDisplayDate(iso) {
+  if (!iso) return "";
+  return new Date(`${iso}T12:00:00`).toLocaleDateString("en-US", {
+    weekday:"short", month:"short", day:"numeric", year:"numeric"
+  });
+}
+
+function todayAtMidnight() {
+  const d = new Date();
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+function openDatePicker(targetId) {
+  activeDateTarget = targetId;
+  const currentValue = document.getElementById(targetId).value;
+  const base = currentValue ? new Date(`${currentValue}T12:00:00`) : new Date();
+  calendarCursor = new Date(base.getFullYear(), base.getMonth(), 1);
+  renderCalendar();
+  dateModal.hidden = false;
+  document.body.classList.add("modalOpen");
+}
+
+function closeDatePicker() {
+  dateModal.hidden = true;
+  document.body.classList.remove("modalOpen");
+}
+
+function selectDate(date) {
+  const input = document.getElementById(activeDateTarget);
+  const display = document.getElementById(`${activeDateTarget}Display`);
+  const value = isoDate(date);
+  input.value = value;
+  display.value = formatDisplayDate(value);
+  input.dispatchEvent(new Event("change", {bubbles:true}));
+
+  if (activeDateTarget === "pickupDate") {
+    const returnInput = document.getElementById("returnDate");
+    const returnDisplay = document.getElementById("returnDateDisplay");
+    if (returnInput.value && returnInput.value < value) {
+      returnInput.value = value;
+      returnDisplay.value = formatDisplayDate(value);
+    }
+  }
+  closeDatePicker();
+  updateSummary();
+}
+
+function renderCalendar() {
+  const year = calendarCursor.getFullYear();
+  const month = calendarCursor.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const selected = activeDateTarget ? document.getElementById(activeDateTarget).value : "";
+  const minimumDate = activeDateTarget === "returnDate" && document.getElementById("pickupDate").value
+    ? new Date(`${document.getElementById("pickupDate").value}T00:00:00`)
+    : todayAtMidnight();
+
+  dateMonthLabel.textContent = new Date(year, month, 1).toLocaleDateString("en-US", {
+    month:"long", year:"numeric"
+  });
+  dateGrid.innerHTML = "";
+
+  for (let i = 0; i < firstDay; i++) {
+    const blank = document.createElement("span");
+    blank.className = "dateBlank";
+    dateGrid.appendChild(blank);
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = day;
+    button.className = "dateDay";
+    const value = isoDate(date);
+
+    if (date < minimumDate) {
+      button.disabled = true;
+      button.classList.add("disabled");
+    }
+    if (value === isoDate(todayAtMidnight())) button.classList.add("today");
+    if (value === selected) button.classList.add("selected");
+
+    button.addEventListener("click", () => selectDate(date));
+    dateGrid.appendChild(button);
+  }
+}
+
+document.querySelectorAll("[data-date-target]").forEach(button => {
+  button.addEventListener("click", () => openDatePicker(button.dataset.dateTarget));
+});
+document.querySelectorAll("[data-date-close]").forEach(button => {
+  button.addEventListener("click", closeDatePicker);
+});
+document.getElementById("datePrev").addEventListener("click", () => {
+  calendarCursor.setMonth(calendarCursor.getMonth() - 1);
+  renderCalendar();
+});
+document.getElementById("dateNext").addEventListener("click", () => {
+  calendarCursor.setMonth(calendarCursor.getMonth() + 1);
+  renderCalendar();
+});
+document.getElementById("dateToday").addEventListener("click", () => selectDate(todayAtMidnight()));
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !dateModal.hidden) closeDatePicker();
+});
+
+fillTimes("returnTime");
 
 function serviceType() {
   return form.querySelector('input[name="serviceType"]:checked').value;

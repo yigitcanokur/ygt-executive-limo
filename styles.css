@@ -48,3 +48,45 @@
   .mobileBookingBar a:first-child{color:var(--gold2)}
   .mobileBookingBar a:last-child{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#080808}
 }
+
+/* V10 custom black-gold date picker */
+.dateDisplayWrap{position:relative}
+.dateDisplayWrap>input[type="text"]{padding-right:52px;cursor:pointer}
+.dateOpenButton{position:absolute;right:7px;top:7px;width:38px;height:38px;border:1px solid rgba(216,173,82,.3);border-radius:8px;background:#171717;color:var(--gold2);font-size:20px;cursor:pointer}
+.dateOpenButton:hover{background:#222}
+.datePickerModal[hidden]{display:none!important}
+.datePickerModal{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:20px}
+.datePickerBackdrop{position:absolute;inset:0;background:rgba(0,0,0,.76);backdrop-filter:blur(7px)}
+.datePickerPanel{position:relative;width:min(430px,94vw);border:1px solid rgba(216,173,82,.38);border-radius:18px;background:linear-gradient(155deg,#181818,#090909);box-shadow:0 35px 100px rgba(0,0,0,.7);overflow:hidden}
+.datePickerHeader{display:grid;grid-template-columns:46px 1fr 46px;align-items:center;padding:20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.datePickerHeader>button{width:42px;height:42px;border:1px solid #333;border-radius:50%;background:#101010;color:var(--gold2);font-size:28px;cursor:pointer}
+.datePickerHeader div{text-align:center}
+.datePickerHeader strong{display:block;font:26px Georgia;color:#fff}
+.datePickerHeader span{display:block;color:#777;font-size:11px;margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
+.dateWeekdays,.dateGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding-left:20px;padding-right:20px}
+.dateWeekdays{padding-top:18px;padding-bottom:10px;color:#777;text-align:center;font-size:11px;text-transform:uppercase}
+.dateGrid{padding-bottom:20px}
+.dateBlank{aspect-ratio:1}
+.dateDay{aspect-ratio:1;border:1px solid transparent;border-radius:50%;background:transparent;color:#ddd;font-weight:700;cursor:pointer}
+.dateDay:hover:not(:disabled){border-color:var(--gold);color:var(--gold2);background:rgba(216,173,82,.08)}
+.dateDay.today{border-color:rgba(216,173,82,.55)}
+.dateDay.selected{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#080808}
+.dateDay.disabled{color:#3f3f3f;cursor:not-allowed}
+.datePickerFooter{display:flex;justify-content:space-between;padding:16px 20px;border-top:1px solid rgba(255,255,255,.08)}
+.datePickerFooter button{min-height:40px;padding:0 18px;border-radius:8px;text-transform:uppercase;font-weight:800;font-size:11px;cursor:pointer}
+.dateCancel{border:1px solid #333;background:#111;color:#aaa}
+.dateToday{border:0;background:var(--gold);color:#080808}
+.modalOpen{overflow:hidden}
+.setupLink{color:#777;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:650px){
+  .datePickerModal{align-items:end;padding:0}
+  .datePickerPanel{width:100%;max-width:none;border-radius:20px 20px 0 0}
+  .datePickerHeader{padding:18px}
+  .dateGrid,.dateWeekdays{padding-left:14px;padding-right:14px}
+}
+
+.setupCard{width:min(700px,94vw);text-align:left}.setupCard h1{text-align:left}
+.statusList{margin:25px 0 35px;border:1px solid #292929;border-radius:12px;overflow:hidden}
+.statusList div{display:flex;justify-content:space-between;gap:20px;padding:17px;border-bottom:1px solid #222}
+.statusList div:last-child{border-bottom:0}.statusList span{color:#bbb}.statusList strong{font-size:12px;text-transform:uppercase}
+.statusList .ok{color:#5ed18d}.statusList .missing{color:#e9a267}
