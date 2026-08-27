@@ -47,6 +47,7 @@ function detectZone(value) {
   if (v.includes("boca raton") || v.includes("mizner park")) return "boca";
   if (v.includes("west palm beach") || v.includes("palm beach international airport") || v.includes("(pbi)") || v.includes("palm beach, fl")) return "west-palm";
   if (v.includes("orlando") || v.includes("orlando international airport") || v.includes("(mco)") || v.includes("disney world") || v.includes("universal orlando")) return "orlando";
+  if (v.includes("miami, fl") || v.includes("el portal") || v.includes("north miami") || v.includes("miami shores") || v.includes("little river") || v.includes("upper eastside")) return "miami";
   return "";
 }
 
@@ -63,7 +64,7 @@ function detectFixedRoute(body) {
     "fll|portmiami":"fll-portmiami",
     "boca|mia":"mia-boca",
     "boca|fll":"fll-boca",
-    "mia|west-palm":"mia-west-palm",
+    "mia|west-palm":"mia-west-palm","miami|west-palm":"mia-west-palm",
     "fll|west-palm":"fll-west-palm",
     "mia|orlando":"mia-orlando"
   };

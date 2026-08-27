@@ -357,6 +357,15 @@ function detectZone(value) {
     v.includes("universal orlando")
   ) return "orlando";
 
+  if (
+    v.includes("miami, fl") ||
+    v.includes("el portal") ||
+    v.includes("north miami") ||
+    v.includes("miami shores") ||
+    v.includes("little river") ||
+    v.includes("upper eastside")
+  ) return "miami";
+
   return "";
 }
 
@@ -374,6 +383,7 @@ function detectFixedRoute() {
     "boca|mia": "mia-boca",
     "boca|fll": "fll-boca",
     "mia|west-palm": "mia-west-palm",
+    "miami|west-palm": "mia-west-palm",
     "fll|west-palm": "fll-west-palm",
     "mia|orlando": "mia-orlando"
   };
