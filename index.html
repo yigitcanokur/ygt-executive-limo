@@ -78,8 +78,8 @@
             <label class="field"><span>Full name</span><input required name="name" autocomplete="name"></label>
             <label class="field"><span>Email</span><input required name="email" type="email" autocomplete="email"></label>
             <label class="field"><span>Phone</span><input required name="phone" autocomplete="tel"></label>
-            <label class="field"><span>Flight number</span><input name="flight" placeholder="Optional"></label>
-            <label class="field"><span>Airline</span><input name="airline" placeholder="Optional"></label>
+            <div id="flightFields" class="airportOnlyFields" hidden><label class="field"><span>Flight number</span><input name="flight" placeholder="Optional"></label>
+            <label class="field"><span>Airline</span><input name="airline" placeholder="Optional"></label></div>
             <label class="field"><span>Pickup preference</span><select name="pickupStyle"><option>Curbside</option><option>Meet & Greet</option><option>FBO Pickup</option></select></label>
             <label class="field"><span>Child seat</span><select name="childSeat"><option>None</option><option>Infant seat</option><option>Toddler seat</option><option>Booster seat</option><option>2 booster seats</option></select></label>
             <label class="field"><span>Passengers</span><input name="passengers" type="number" min="1" value="1"></label>

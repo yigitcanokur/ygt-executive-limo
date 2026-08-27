@@ -603,6 +603,40 @@ function toggleReturn() {
   document.getElementById("returnTime").required = checked;
 }
 
+
+function isAirportLocation(value) {
+  const v = normalize(value);
+  return (
+    v.includes("miami international airport") ||
+    v.includes("(mia)") ||
+    v.includes("fort lauderdale-hollywood international airport") ||
+    v.includes("(fll)") ||
+    v.includes("palm beach international airport") ||
+    v.includes("(pbi)") ||
+    v.includes("orlando international airport") ||
+    v.includes("(mco)")
+  );
+}
+
+function updateAirportOnlyFields() {
+  const wrap = document.getElementById("flightFields");
+  if (!wrap) return;
+
+  const show = serviceType() === "transfer" && (
+    isAirportLocation(pickupAddress.value) ||
+    isAirportLocation(dropoffAddress.value)
+  );
+
+  wrap.hidden = !show;
+
+  if (!show) {
+    const flight = form.querySelector('[name="flight"]');
+    const airline = form.querySelector('[name="airline"]');
+    if (flight) flight.value = "";
+    if (airline) airline.value = "";
+  }
+}
+
 function updateSummary() {
   const data = Object.fromEntries(new FormData(form).entries());
   document.getElementById("sumService").textContent =
@@ -677,6 +711,7 @@ form.addEventListener("change", event => {
     scheduleRouteQuote();
   }
 
+  updateAirportOnlyFields();
   updateSummary();
 });
 form.addEventListener("input", updateSummary);
@@ -726,3 +761,5 @@ form.addEventListener("submit", async event => {
     button.textContent = "PAY & CONFIRM";
   }
 });
+
+updateAirportOnlyFields();

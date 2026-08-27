@@ -225,3 +225,6 @@
 #returnTime {
   cursor: pointer;
 }
+
+.airportOnlyFields[hidden]{display:none!important}
+.airportOnlyFields{display:contents}
