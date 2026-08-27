@@ -145,23 +145,10 @@
 /* V14.1 — keep Google validation internal; no technical helper text for customers */
 .locationHelper:empty,.googleLocationHelper:empty,[data-google-location-helper]:empty{display:none!important}
 
-/* V14.1.1 — verification check is hidden until a Google suggestion is selected */
-.googleCheck,
-.locationCheck,
-.addressCheck,
-.verifiedCheck,
-.googleVerifiedCheck,
-[data-google-check]{
-  opacity:0!important;
-  visibility:hidden!important;
-  transition:opacity .18s ease;
-}
-.google-address-verified .googleCheck,
-.google-address-verified .locationCheck,
-.google-address-verified .addressCheck,
-.google-address-verified .verifiedCheck,
-.google-address-verified .googleVerifiedCheck,
-.google-address-verified [data-google-check]{
-  opacity:1!important;
-  visibility:visible!important;
+/* V14.2 — hide all customer-facing Google helper/technical text */
+.googleHint,
+.googleLocationHelper,
+.locationHelper,
+[data-google-location-helper] {
+  display: none !important;
 }

@@ -1,12 +1,11 @@
-YGT Executive Limo — V14.1.1 Google Tick Fix
+YGT Executive Limo V14.2
 
-Behavior:
-- Pickup/Drop-off start with NO green check.
-- Typing manually does NOT show the check.
-- Selecting a valid Google autocomplete suggestion shows the green check.
-- Editing the selected address hides the check again.
-- Google Places autocomplete and pricing remain unchanged.
+Fix:
+- Removed all visible Google technical/helper text below Pickup and Drop-off.
+- Google Places autocomplete still works in the background.
+- Address verification still requires selecting a Google suggestion before Continue.
 
 Replace:
-- script.js
+- index.html
 - styles.css
+- script.js
