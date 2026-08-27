@@ -623,11 +623,7 @@ function updateSummary() {
 }
 
 document.addEventListener("ygt-place-selected", scheduleRouteQuote);
-document.addEventListener("ygt-maps-unavailable", () => {
-  document.querySelectorAll(".googleHint").forEach(hint => {
-    hint.textContent = "Location search is being connected. Please try again shortly." ;
-    hint.classList.add("mapsWarning");
-  });
+document.addEventListener("ygt-maps-unavailable", () => { console.warn("Google Maps is unavailable."); });
 });
 
 form.addEventListener("change", event => {

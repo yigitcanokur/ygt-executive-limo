@@ -1,13 +1,11 @@
-YGT Executive Limo V14.1
+YGT Executive Limo V14.2
 
-Change:
-- Removed customer-facing “Google-verified location required” text.
-- Google Places autocomplete and address verification remain active in the background.
-- Customers can use the address fields normally without seeing technical Google validation wording.
+Fix:
+- Removed all visible Google technical/helper text below Pickup and Drop-off.
+- Google Places autocomplete still works in the background.
+- Address verification still requires selecting a Google suggestion before Continue.
 
-Upload:
+Replace:
 - index.html
-- script.js
 - styles.css
-
-Or upload the complete package.
+- script.js

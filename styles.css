@@ -144,3 +144,11 @@
 
 /* V14.1 — keep Google validation internal; no technical helper text for customers */
 .locationHelper:empty,.googleLocationHelper:empty,[data-google-location-helper]:empty{display:none!important}
+
+/* V14.2 — hide all customer-facing Google helper/technical text */
+.googleHint,
+.googleLocationHelper,
+.locationHelper,
+[data-google-location-helper] {
+  display: none !important;
+}
