@@ -363,7 +363,7 @@ function detectZone(value) {
     v.includes("north miami") ||
     v.includes("miami shores") ||
     v.includes("little river") ||
-    v.includes("upper eastside")
+    v.includes("upper eastside") || v.includes("downtown miami") || v.includes("brickell") || v.includes("coral gables") || v.includes("coconut grove")
   ) return "miami";
 
   return "";
@@ -377,6 +377,7 @@ function detectFixedRoute() {
   const routeMap = {
     "mia|miami-beach": "mia-miami-beach",
     "mia|portmiami": "mia-portmiami",
+    "miami|portmiami": "mia-portmiami",
     "fll|mia": "mia-fll",
     "fll|miami-beach": "fll-miami-beach",
     "fll|portmiami": "fll-portmiami",
@@ -637,7 +638,28 @@ function updateAirportOnlyFields() {
   }
 }
 
+
+function buildPremiumReviewSummary() {
+  const host = document.getElementById("premiumReviewSummary");
+  if (!host) return;
+
+  const vehicle = selectedVehicle || "—";
+  const price = currentPrice ? `$${Math.round(currentPrice)}` : "—";
+  const airport = isAirportLocation(pickupAddress.value) || isAirportLocation(dropoffAddress.value);
+  const flight = airport ? (form.querySelector('[name="flight"]')?.value || "Not provided") : null;
+
+  host.innerHTML = `
+    <div><span>Pickup</span><strong>${pickupAddress.value || "—"}</strong></div>
+    <div><span>Drop-off</span><strong>${dropoffAddress.value || "—"}</strong></div>
+    <div><span>Date & Time</span><strong>${pickupDate.value || "—"} ${pickupTime.value || ""}</strong></div>
+    <div><span>Vehicle</span><strong>${vehicle}</strong></div>
+    ${airport ? `<div><span>Flight</span><strong>${flight}</strong></div>` : ""}
+    <div class="reviewTotal"><span>Total</span><strong>${price}</strong></div>
+  `;
+}
+
 function updateSummary() {
+  setTimeout(buildPremiumReviewSummary, 0);
   const data = Object.fromEntries(new FormData(form).entries());
   document.getElementById("sumService").textContent =
     serviceType() === "hourly"

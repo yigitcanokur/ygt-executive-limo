@@ -228,3 +228,18 @@
 
 .airportOnlyFields[hidden]{display:none!important}
 .airportOnlyFields{display:contents}
+
+/* V16 Stability + Conversion */
+.premiumReviewSummary{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#252525;border:1px solid #292929;border-radius:14px;overflow:hidden;margin:20px 0}
+.premiumReviewSummary>div{background:#0e0e0e;padding:17px}
+.premiumReviewSummary span{display:block;color:#777;text-transform:uppercase;letter-spacing:.1em;font-size:9px;margin-bottom:6px}
+.premiumReviewSummary strong{font-size:13px;line-height:1.45}
+.premiumReviewSummary .reviewTotal strong{font:26px Georgia;color:var(--gold2)}
+.mobileContactBar{display:none}
+@media(max-width:700px){
+  body{padding-bottom:68px}
+  .mobileContactBar{position:fixed;display:grid;grid-template-columns:repeat(3,1fr);left:0;right:0;bottom:0;z-index:9999;background:rgba(7,7,7,.96);border-top:1px solid rgba(216,173,82,.38);backdrop-filter:blur(14px);padding:8px}
+  .mobileContactBar a{display:grid;place-items:center;min-height:46px;color:var(--gold2);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;border-right:1px solid #292929}
+  .mobileContactBar a:last-child{border-right:0}
+  .premiumReviewSummary{grid-template-columns:1fr}
+}

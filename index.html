@@ -87,7 +87,8 @@
             <label class="field wide"><span>Special requests</span><textarea name="notes" rows="4" placeholder="Hotel, terminal, FBO, extra stops or other details"></textarea></label>
           </div>
         </div>
-        <aside class="summaryCard"><span class="summaryLabel">Trip Summary</span><div class="summaryRows"><div><span>Service</span><strong id="sumService">Point-to-Point</strong></div><div><span>Trip</span><strong id="sumRoute">—</strong></div><div><span>Date</span><strong id="sumDate">—</strong></div><div><span>Vehicle</span><strong id="sumVehicle">—</strong></div></div><div class="summaryTotal"><span>Total</span><strong id="total">—</strong></div><small>Final price. No hidden fees.</small><div class="airportPolicy">Airport pickups include flight tracking and complimentary waiting time when flight details are provided.</div><button class="payButton" type="submit">Pay & Confirm</button><div class="secureText">🔒 Secure checkout powered by Stripe</div></aside>
+        <aside class="summaryCard"><span class="summaryLabel">Trip Summary</span><div class="summaryRows"><div><span>Service</span><strong id="sumService">Point-to-Point</strong></div><div><span>Trip</span><strong id="sumRoute">—</strong></div><div><span>Date</span><strong id="sumDate">—</strong></div><div><span>Vehicle</span><strong id="sumVehicle">—</strong></div></div><div class="summaryTotal"><span>Total</span><strong id="total">—</strong></div><small>Final price. No hidden fees.</small><div class="airportPolicy">Airport pickups include flight tracking and complimentary waiting time when flight details are provided.</div><div id="premiumReviewSummary" class="premiumReviewSummary"></div>
+<button class="payButton" type="submit">Pay & Confirm</button><div class="secureText">🔒 Secure checkout powered by Stripe</div></aside>
       </div>
       <div class="stepActions"><button type="button" class="backBtn" data-back="2">Back</button></div>
     </section>
@@ -251,4 +252,10 @@
 </div>
 
 <script src="maps.js"></script><script src="script.js"></script>
+
+<div class="mobileContactBar" aria-label="Quick contact">
+  <a href="tel:+13055550199">Call</a>
+  <a href="sms:+13055550199">Text</a>
+  <a href="https://wa.me/13055550199" target="_blank" rel="noopener">WhatsApp</a>
+</div>
 </body></html>

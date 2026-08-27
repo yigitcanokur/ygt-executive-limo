@@ -1,18 +1,20 @@
-YGT Executive Limo — V15.2 FUNCTIONAL FIX
+YGT Executive Limo — V16 Stability + Conversion
 
-Root cause fixed:
-- Previous Google tick patch referenced pickupAddress/dropoffAddress before they were declared.
-- That JavaScript error stopped the rest of script.js, which is why Pickup Date and Pickup Time did not work.
+New:
+- More consistent Miami-zone handling for Boca, West Palm, Orlando and PortMiami routes
+- Premium final reservation review card
+- Airport flight details only appear when relevant
+- Mobile Call / Text / WhatsApp quick-contact bar
+- Existing V15.5 airport-field logic retained
+- Existing fixed pricing and Google Places retained
 
-Now:
-- Pickup date box opens the custom calendar.
-- Calendar icon opens the calendar.
-- Pickup time shows 30-minute options.
-- Return time shows 30-minute options.
-- Green Google check appears only after a real autocomplete selection.
-- Typing manually hides the check again.
-- V15 premium homepage and pricing are retained.
+IMPORTANT:
+The mobile contact bar currently contains placeholder number +1 305 555 0199.
+Replace it in index.html with the real YGT business phone number before publishing.
 
-Replace:
+Upload the complete package or replace:
+- index.html
 - script.js
 - styles.css
+- api/create-checkout.js
+- api/route-quote.js
