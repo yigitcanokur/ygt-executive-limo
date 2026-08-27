@@ -31,8 +31,8 @@
       <div class="serviceTabs"><label><input type="radio" name="serviceType" value="transfer" checked><span>Point-to-Point</span></label><label><input type="radio" name="serviceType" value="hourly"><span>Hourly</span></label></div>
       <div class="formGrid">
         
-        <label id="pickupWrap" class="field wide"><span>Pickup location</span><input id="pickupAddress" name="pickupAddress" required placeholder="Start typing and select a Google location" autocomplete="off"><input id="pickupPlaceId" name="pickupPlaceId" type="hidden"></label>
-        <label id="dropoffWrap" class="field wide"><span>Drop-off location</span><input id="dropoffAddress" name="dropoffAddress" required placeholder="Start typing and select a Google location" autocomplete="off"><input id="dropoffPlaceId" name="dropoffPlaceId" type="hidden"></label>
+        <label id="pickupWrap" class="field wide"><span>Pickup location</span><input id="pickupAddress" name="pickupAddress" required placeholder="Start typing and select a Google location" autocomplete="off"><input id="pickupPlaceId" name="pickupPlaceId" type="hidden"><small class="googleHint"></small></label>
+        <label id="dropoffWrap" class="field wide"><span>Drop-off location</span><input id="dropoffAddress" name="dropoffAddress" required placeholder="Start typing and select a Google location" autocomplete="off"><input id="dropoffPlaceId" name="dropoffPlaceId" type="hidden"><small class="googleHint"></small></label>
         <div id="routeInfo" class="routeInfo wide" hidden>
           <div><span>Estimated distance</span><strong id="distanceText">—</strong></div>
           <div><span>Estimated drive time</span><strong id="durationText">—</strong></div>

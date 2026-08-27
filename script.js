@@ -104,6 +104,37 @@ const vehicles = [
 let currentStep = 1;
 let selectedVehicle = "";
 let routeQuote = null;
+
+// V14.1.1 — Google address verification tick state
+const googleVerifiedAddress = {
+  pickup: false,
+  dropoff: false
+};
+
+function setGoogleVerified(type, verified) {
+  googleVerifiedAddress[type] = Boolean(verified);
+  const input = type === "pickup" ? pickupAddress : dropoffAddress;
+  if (!input) return;
+
+  const field = input.closest(".field, .formField, label, .inputWrap") || input.parentElement;
+  if (!field) return;
+
+  field.classList.toggle("google-address-verified", Boolean(verified));
+}
+
+function resetGoogleVerified(type) {
+  setGoogleVerified(type, false);
+}
+
+if (pickupAddress) {
+  resetGoogleVerified("pickup");
+  pickupAddress.addEventListener("input", () => resetGoogleVerified("pickup"));
+}
+if (dropoffAddress) {
+  resetGoogleVerified("dropoff");
+  dropoffAddress.addEventListener("input", () => resetGoogleVerified("dropoff"));
+}
+
 let routeKey = "";
 let quoteTimer = null;
 
@@ -623,7 +654,11 @@ function updateSummary() {
 }
 
 document.addEventListener("ygt-place-selected", scheduleRouteQuote);
-document.addEventListener("ygt-maps-unavailable", () => { console.warn("Google Maps is unavailable."); });
+document.addEventListener("ygt-maps-unavailable", () => {
+  document.querySelectorAll(".googleHint").forEach(hint => {
+    hint.textContent = "Location search is being connected. Please try again shortly." ;
+    hint.classList.add("mapsWarning");
+  });
 });
 
 form.addEventListener("change", event => {
