@@ -31,8 +31,8 @@
       <div class="serviceTabs"><label><input type="radio" name="serviceType" value="transfer" checked><span>Point-to-Point</span></label><label><input type="radio" name="serviceType" value="hourly"><span>Hourly</span></label></div>
       <div class="formGrid">
         
-        <label id="pickupWrap" class="field wide"><span>Pickup location</span><input id="pickupAddress" name="pickupAddress" required placeholder="Start typing and select a Google location" autocomplete="off"><input id="pickupPlaceId" name="pickupPlaceId" type="hidden"></label>
-        <label id="dropoffWrap" class="field wide"><span>Drop-off location</span><input id="dropoffAddress" name="dropoffAddress" required placeholder="Start typing and select a Google location" autocomplete="off"><input id="dropoffPlaceId" name="dropoffPlaceId" type="hidden"></label>
+        <label id="pickupWrap" class="field wide"><span>Pickup location</span><input id="pickupAddress" name="pickupAddress" required placeholder="Start typing and select a Google location" autocomplete="off"><input id="pickupPlaceId" name="pickupPlaceId" type="hidden"><small class="googleHint"></small></label>
+        <label id="dropoffWrap" class="field wide"><span>Drop-off location</span><input id="dropoffAddress" name="dropoffAddress" required placeholder="Start typing and select a Google location" autocomplete="off"><input id="dropoffPlaceId" name="dropoffPlaceId" type="hidden"><small class="googleHint"></small></label>
         <div id="routeInfo" class="routeInfo wide" hidden>
           <div><span>Estimated distance</span><strong id="distanceText">—</strong></div>
           <div><span>Estimated drive time</span><strong id="durationText">—</strong></div>
@@ -97,6 +97,135 @@
 <section class="trustStrip"><div><strong>Professional Chauffeurs</strong><span>Discreet, polished and service-focused.</span></div><div><strong>Flight Tracking</strong><span>Airport arrivals monitored when flight details are supplied.</span></div><div><strong>No Hidden Fees</strong><span>Clear final price before checkout.</span></div><div><strong>24/7 Support</strong><span>Direct help before and during your ride.</span></div></section>
 <section class="section" id="fleet"><div class="sectionIntro"><span class="eyebrow">Our Fleet</span><h2>Premium categories for every journey.</h2></div><div class="fleetHero"><img src="assets/fleet.png" alt="Luxury fleet"></div></section>
 <section class="fbo" id="services"><div class="fboShade"></div><div><span class="eyebrow">Private Aviation</span><h2>Discreet service for FBO arrivals and departures.</h2></div></section>
+
+<section class="premiumIntro">
+  <div class="sectionHeading">
+    <span class="eyebrow">South Florida Chauffeur Service</span>
+    <h2>Professional transportation for every part of the journey.</h2>
+    <p>From airport arrivals to corporate schedules, private aviation, cruise ports and long-distance service, YGT Executive Limo is built around clear communication, punctuality and premium vehicles.</p>
+  </div>
+  <div class="premiumStats">
+    <article><strong>24/7</strong><span>Availability</span></article>
+    <article><strong>MIA · FLL</strong><span>Airport Coverage</span></article>
+    <article><strong>3 Hr</strong><span>Hourly Minimum</span></article>
+    <article><strong>South Florida</strong><span>Primary Service Area</span></article>
+  </div>
+</section>
+
+<section class="premiumServices" id="premium-services">
+  <div class="sectionHeading">
+    <span class="eyebrow">Services</span>
+    <h2>One company for airport, corporate and private travel.</h2>
+  </div>
+  <div class="serviceCards">
+    <article>
+      <span class="serviceNumber">01</span>
+      <h3>Airport Transfers</h3>
+      <p>MIA, FLL and private aviation pickups with flight information, coordinated arrival timing and professional curbside or meet-and-greet service.</p>
+    </article>
+    <article>
+      <span class="serviceNumber">02</span>
+      <h3>Corporate Transportation</h3>
+      <p>Executive chauffeur service for meetings, roadshows, client transportation and multi-stop business schedules.</p>
+    </article>
+    <article>
+      <span class="serviceNumber">03</span>
+      <h3>Cruise Port Transfers</h3>
+      <p>Private transportation to and from PortMiami and Port Everglades with room for passengers and luggage.</p>
+    </article>
+    <article>
+      <span class="serviceNumber">04</span>
+      <h3>Hourly Chauffeur</h3>
+      <p>Flexible as-directed service for dining, shopping, nightlife, events and full-day executive schedules.</p>
+    </article>
+    <article>
+      <span class="serviceNumber">05</span>
+      <h3>Special Events</h3>
+      <p>Premium transportation for weddings, concerts, sports, galas, nightlife and private events.</p>
+    </article>
+    <article>
+      <span class="serviceNumber">06</span>
+      <h3>Long Distance</h3>
+      <p>Private city-to-city transportation to Boca Raton, West Palm Beach, Orlando and other Florida destinations.</p>
+    </article>
+  </div>
+</section>
+
+<section class="premiumFleetShowcase">
+  <div class="sectionHeading">
+    <span class="eyebrow">Fleet Categories</span>
+    <h2>Choose the right level of comfort.</h2>
+    <p>Exact models are subject to availability; an equivalent or higher-class vehicle may be provided.</p>
+  </div>
+  <div class="premiumFleetGrid">
+    <article class="premiumFleetCard">
+      <div class="premiumFleetImage"><img src="assets/sedan.jpg" alt="Luxury sedan"></div>
+      <div class="premiumFleetBody"><span>2 Passengers · 3 Bags</span><h3>Luxury Sedan</h3><p>Professional black-car service for airport and corporate travel.</p><a href="#booking">Book Sedan</a></div>
+    </article>
+    <article class="premiumFleetCard featured">
+      <div class="fleetRibbon">Most Popular</div>
+      <div class="premiumFleetImage"><img src="assets/suburban.jpg" alt="Chevrolet Suburban"></div>
+      <div class="premiumFleetBody"><span>6 Passengers · 6 Bags</span><h3>Chevrolet Suburban</h3><p>Spacious full-size SUV for families, executives and airport luggage.</p><a href="#booking">Book Suburban</a></div>
+    </article>
+    <article class="premiumFleetCard">
+      <div class="fleetRibbon">Executive Choice</div>
+      <div class="premiumFleetImage"><img src="assets/escalade.jpg" alt="Cadillac Escalade ESV"></div>
+      <div class="premiumFleetBody"><span>6 Passengers · 6 Bags</span><h3>Cadillac Escalade ESV</h3><p>Flagship luxury SUV for VIP, executive and premium private travel.</p><a href="#booking">Book Escalade</a></div>
+    </article>
+    <article class="premiumFleetCard">
+      <div class="premiumFleetImage"><img src="assets/sclass.jpg" alt="Mercedes-Benz S-Class"></div>
+      <div class="premiumFleetBody"><span>2 Passengers · 3 Bags</span><h3>Mercedes-Benz S-Class</h3><p>First-class executive sedan service with a more private rear-cabin experience.</p><a href="#booking">Book S-Class</a></div>
+    </article>
+    <article class="premiumFleetCard">
+      <div class="premiumFleetImage"><img src="assets/passenger-van.jpg" alt="Passenger Sprinter"></div>
+      <div class="premiumFleetBody"><span>Up to 10 Passengers</span><h3>Passenger Sprinter</h3><p>Comfortable group transportation with generous luggage capacity.</p><a href="#booking">Book Sprinter</a></div>
+    </article>
+    <article class="premiumFleetCard">
+      <div class="premiumFleetImage"><img src="assets/executive-van.jpg" alt="Executive Sprinter"></div>
+      <div class="premiumFleetBody"><span>Up to 14 Passengers</span><h3>Executive Sprinter</h3><p>Premium group travel for corporate, events and private transportation.</p><a href="#booking">Book Executive Sprinter</a></div>
+    </article>
+  </div>
+</section>
+
+<section class="serviceAreasPremium">
+  <div class="sectionHeading">
+    <span class="eyebrow">Service Areas</span>
+    <h2>South Florida and beyond.</h2>
+  </div>
+  <div class="serviceAreaGrid">
+    <a href="#booking"><strong>Miami</strong><span>MIA · Brickell · Downtown</span></a>
+    <a href="#booking"><strong>Miami Beach</strong><span>South Beach · Mid-Beach · Bal Harbour</span></a>
+    <a href="#booking"><strong>Fort Lauderdale</strong><span>FLL · Las Olas · Fort Lauderdale Beach</span></a>
+    <a href="#booking"><strong>PortMiami</strong><span>Cruise Terminal Transfers</span></a>
+    <a href="#booking"><strong>Boca Raton</strong><span>Private & Corporate Travel</span></a>
+    <a href="#booking"><strong>West Palm Beach</strong><span>Palm Beach · PBI</span></a>
+    <a href="#booking"><strong>Orlando</strong><span>Long-Distance Private Service</span></a>
+    <a href="#booking"><strong>Custom Route</strong><span>Google-based instant quote</span></a>
+  </div>
+</section>
+
+<section class="trustPremium">
+  <div>
+    <span class="eyebrow">Why YGT</span>
+    <h2>Luxury service without unnecessary complexity.</h2>
+  </div>
+  <div class="trustPremiumGrid">
+    <article><strong>Flight-Aware Pickup</strong><p>Provide your flight details and we coordinate timing around the actual arrival.</p></article>
+    <article><strong>Secure Online Payment</strong><p>Reservations can be paid through Stripe with a clear confirmation flow.</p></article>
+    <article><strong>Professional Communication</strong><p>Direct updates before pickup and throughout the transportation experience.</p></article>
+    <article><strong>Premium Vehicle Network</strong><p>Additional premium categories can be arranged through a trusted affiliate network when required.</p></article>
+  </div>
+</section>
+
+<section class="reviewsReady">
+  <div class="sectionHeading">
+    <span class="eyebrow">Client Reviews</span>
+    <h2>Google Reviews integration ready.</h2>
+    <p>Once your Google Business review feed is connected, verified client reviews can appear here automatically. Until then, we do not display fabricated testimonials.</p>
+  </div>
+  <a class="outlineBtn" href="#booking">Reserve Your Ride</a>
+</section>
+
 <section class="cta" id="contact"><span class="eyebrow">Ready when you are</span><h2>Reserve your next ride with YGT Executive Limo.</h2><div class="actions center"><a class="btn gold" href="#booking">Book Now</a><a class="btn outline" href="tel:+12018971912">(201) 897-1912</a><a class="btn outline" href="https://instagram.com/ygtlimo">@ygtlimo</a></div></section>
 </main>
 <footer><div><img src="assets/logo.png" alt="YGT Executive Limo"><p>Luxury chauffeur service in Miami and throughout South Florida.</p></div><div><strong>Contact</strong><a href="tel:+12018971912">(201) 897-1912</a><a href="mailto:yigitcanflorida@gmail.com">yigitcanflorida@gmail.com</a></div><small><a href="/terms.html">Terms</a> · <a href="/cancellation-policy.html">Cancellation Policy</a> · <a href="/privacy.html">Privacy</a> · <a href="/setup.html" class="setupLink">System status</a> · © 2026 YGT Executive Limo LLC. All rights reserved. Vehicle reference photos: Wikimedia Commons contributors, CC BY-SA 4.0.</small></footer><div class="mobileBookingBar"><a href="tel:+12018971912">Call</a><a href="#booking">Book Now</a></div>

@@ -145,10 +145,41 @@
 /* V14.1 — keep Google validation internal; no technical helper text for customers */
 .locationHelper:empty,.googleLocationHelper:empty,[data-google-location-helper]:empty{display:none!important}
 
-/* V14.2 — hide all customer-facing Google helper/technical text */
-.googleHint,
-.googleLocationHelper,
-.locationHelper,
-[data-google-location-helper] {
-  display: none !important;
+/* V14.1.1 — verification check is hidden until a Google suggestion is selected */
+.googleCheck,
+.locationCheck,
+.addressCheck,
+.verifiedCheck,
+.googleVerifiedCheck,
+[data-google-check]{
+  opacity:0!important;
+  visibility:hidden!important;
+  transition:opacity .18s ease;
 }
+.google-address-verified .googleCheck,
+.google-address-verified .locationCheck,
+.google-address-verified .addressCheck,
+.google-address-verified .verifiedCheck,
+.google-address-verified .googleVerifiedCheck,
+.google-address-verified [data-google-check]{
+  opacity:1!important;
+  visibility:visible!important;
+}
+
+/* V15 Premium Homepage */
+.heroTrustBar{position:absolute;left:5vw;right:5vw;bottom:25px;z-index:3;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(255,255,255,.12);background:rgba(5,5,5,.62);backdrop-filter:blur(16px)}
+.heroTrustBar div{padding:16px 18px;border-right:1px solid rgba(255,255,255,.1)}
+.heroTrustBar div:last-child{border-right:0}.heroTrustBar strong{display:block;color:var(--gold2);font-size:12px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}.heroTrustBar span{color:#b7b0a4;font-size:12px}
+.sectionHeading{max-width:860px}.sectionHeading h2{font:clamp(42px,5vw,68px) Georgia;margin:16px 0;line-height:1.02}.sectionHeading p{color:#aaa;line-height:1.75;font-size:17px}
+.premiumIntro,.premiumServices,.premiumFleetShowcase,.serviceAreasPremium,.trustPremium,.reviewsReady{width:min(1380px,92vw);margin:120px auto}
+.premiumIntro{display:grid;grid-template-columns:1.2fr .8fr;gap:70px;align-items:end}
+.premiumStats{display:grid;grid-template-columns:1fr 1fr;border:1px solid #242424;background:#0e0e0e}
+.premiumStats article{padding:26px;border-right:1px solid #242424;border-bottom:1px solid #242424}.premiumStats article:nth-child(2n){border-right:0}.premiumStats article:nth-last-child(-n+2){border-bottom:0}.premiumStats strong{display:block;font:32px Georgia;color:var(--gold2)}.premiumStats span{display:block;margin-top:6px;color:#888;text-transform:uppercase;font-size:10px;letter-spacing:.1em}
+.serviceCards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px}.serviceCards article{min-height:270px;padding:28px;border:1px solid #252525;background:linear-gradient(160deg,#121212,#090909);border-radius:14px;transition:.25s}.serviceCards article:hover{transform:translateY(-5px);border-color:rgba(216,173,82,.45)}.serviceNumber{color:var(--gold2);font-size:11px;letter-spacing:.16em}.serviceCards h3{font:30px Georgia;margin:40px 0 12px}.serviceCards p{color:#999;line-height:1.7}
+.premiumFleetGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}.premiumFleetCard{position:relative;border:1px solid #252525;background:#101010;border-radius:15px;overflow:hidden;transition:.3s}.premiumFleetCard:hover{transform:translateY(-6px);border-color:rgba(216,173,82,.5);box-shadow:0 22px 55px rgba(0,0,0,.35)}.premiumFleetCard.featured{border-color:rgba(216,173,82,.5)}.premiumFleetImage{height:240px;overflow:hidden}.premiumFleetImage img{width:100%;height:100%;object-fit:cover;transition:.45s}.premiumFleetCard:hover img{transform:scale(1.03)}.premiumFleetBody{padding:24px}.premiumFleetBody>span{color:#777;font-size:10px;text-transform:uppercase;letter-spacing:.1em}.premiumFleetBody h3{font:29px Georgia;margin:9px 0 12px}.premiumFleetBody p{color:#999;line-height:1.65;min-height:74px}.premiumFleetBody a{color:var(--gold2);font-size:11px;text-transform:uppercase;letter-spacing:.09em}.fleetRibbon{position:absolute;top:14px;left:14px;z-index:2;background:rgba(6,6,6,.88);border:1px solid var(--gold);color:var(--gold2);padding:8px 11px;border-radius:999px;font-size:9px;text-transform:uppercase;letter-spacing:.12em}
+.serviceAreaGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:35px}.serviceAreaGrid a{display:block;padding:24px;border:1px solid #242424;background:#0e0e0e;border-radius:12px;transition:.22s}.serviceAreaGrid a:hover{border-color:var(--gold);transform:translateY(-3px)}.serviceAreaGrid strong{display:block;font:24px Georgia;margin-bottom:7px}.serviceAreaGrid span{color:#888;font-size:12px;line-height:1.5}
+.trustPremium{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;padding:55px;border:1px solid rgba(216,173,82,.22);background:linear-gradient(135deg,#121212,#090909);border-radius:18px}.trustPremium h2{font:clamp(42px,5vw,64px) Georgia;line-height:1.03;margin:16px 0}.trustPremiumGrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.trustPremiumGrid article{padding:20px;border-bottom:1px solid #272727}.trustPremiumGrid strong{color:var(--gold2)}.trustPremiumGrid p{color:#999;line-height:1.6;font-size:14px}
+.reviewsReady{display:flex;justify-content:space-between;align-items:end;gap:50px;padding:50px;border:1px dashed rgba(216,173,82,.35);border-radius:18px;background:radial-gradient(circle at 10% 10%,rgba(216,173,82,.08),transparent 42%),#0c0c0c}
+.reviewsReady .outlineBtn{white-space:nowrap}
+@media(max-width:1050px){.premiumIntro,.trustPremium{grid-template-columns:1fr}.premiumFleetGrid,.serviceCards{grid-template-columns:repeat(2,1fr)}.serviceAreaGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.heroTrustBar{position:relative;left:auto;right:auto;bottom:auto;grid-template-columns:1fr 1fr;margin:0 18px 22px}.heroTrustBar div:nth-child(2){border-right:0}.premiumIntro,.premiumServices,.premiumFleetShowcase,.serviceAreasPremium,.trustPremium,.reviewsReady{margin:80px auto}.premiumStats,.premiumFleetGrid,.serviceCards,.serviceAreaGrid,.trustPremiumGrid{grid-template-columns:1fr}.premiumStats article{border-right:0!important}.premiumStats article:nth-last-child(-n+2){border-bottom:1px solid #242424}.premiumStats article:last-child{border-bottom:0}.premiumFleetImage{height:210px}.reviewsReady{align-items:flex-start;flex-direction:column;padding:30px}.trustPremium{padding:30px}}
