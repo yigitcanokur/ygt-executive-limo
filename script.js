@@ -105,6 +105,24 @@ let currentStep = 1;
 let selectedVehicle = "";
 let routeQuote = null;
 
+function setAddressVerified(input, verified){
+  if(!input)return;
+  const field=input.closest(".field, .formField, label, .inputWrap")||input.parentElement;
+  if(field)field.classList.toggle("google-address-verified",!!verified);
+}
+if(pickupAddress){
+  setAddressVerified(pickupAddress,false);
+  pickupAddress.addEventListener("input",()=>setAddressVerified(pickupAddress,false));
+}
+if(dropoffAddress){
+  setAddressVerified(dropoffAddress,false);
+  dropoffAddress.addEventListener("input",()=>setAddressVerified(dropoffAddress,false));
+}
+document.addEventListener("ygt-place-selected",()=>{
+  if(pickupPlaceId && pickupPlaceId.value)setAddressVerified(pickupAddress,true);
+  if(dropoffPlaceId && dropoffPlaceId.value)setAddressVerified(dropoffAddress,true);
+});
+
 // V14.1.1 — Google address verification tick state
 const googleVerifiedAddress = {
   pickup: false,

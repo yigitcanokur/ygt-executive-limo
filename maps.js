@@ -58,7 +58,7 @@ async function loadGoogleMaps() {
         placeIdInput.value = place.place_id;
         input.value = place.formatted_address || place.name || input.value;
         input.classList.add("googleSelected");
-        document.dispatchEvent(new CustomEvent("ygt-place-selected"));
+        if (place && place.place_id) document.dispatchEvent(new CustomEvent("ygt-place-selected"));
       });
     });
   } catch (error) {

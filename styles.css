@@ -183,3 +183,32 @@
 .reviewsReady .outlineBtn{white-space:nowrap}
 @media(max-width:1050px){.premiumIntro,.trustPremium{grid-template-columns:1fr}.premiumFleetGrid,.serviceCards{grid-template-columns:repeat(2,1fr)}.serviceAreaGrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.heroTrustBar{position:relative;left:auto;right:auto;bottom:auto;grid-template-columns:1fr 1fr;margin:0 18px 22px}.heroTrustBar div:nth-child(2){border-right:0}.premiumIntro,.premiumServices,.premiumFleetShowcase,.serviceAreasPremium,.trustPremium,.reviewsReady{margin:80px auto}.premiumStats,.premiumFleetGrid,.serviceCards,.serviceAreaGrid,.trustPremiumGrid{grid-template-columns:1fr}.premiumStats article{border-right:0!important}.premiumStats article:nth-last-child(-n+2){border-bottom:1px solid #242424}.premiumStats article:last-child{border-bottom:0}.premiumFleetImage{height:210px}.reviewsReady{align-items:flex-start;flex-direction:column;padding:30px}.trustPremium{padding:30px}}
+
+/* V15.1 Google verification tick */
+.googleHint::before,
+.googleLocationHelper::before,
+.locationHelper::before,
+.field::after,
+.formField::after,
+.inputWrap::after{
+  content:none!important;
+}
+.google-address-verified{position:relative}
+.google-address-verified::after{
+  content:"✓"!important;
+  position:absolute;
+  right:14px;
+  top:36px;
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#183d2b;
+  color:#66d49a;
+  font-size:13px;
+  font-weight:900;
+  pointer-events:none;
+  z-index:3;
+}
+.google-address-verified input{padding-right:48px!important}
