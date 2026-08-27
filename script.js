@@ -118,41 +118,6 @@ if(dropoffAddress){
   setAddressVerified(dropoffAddress,false);
   dropoffAddress.addEventListener("input",()=>setAddressVerified(dropoffAddress,false));
 }
-document.addEventListener("ygt-place-selected",()=>{
-  if(pickupPlaceId && pickupPlaceId.value)setAddressVerified(pickupAddress,true);
-  if(dropoffPlaceId && dropoffPlaceId.value)setAddressVerified(dropoffAddress,true);
-});
-
-// V14.1.1 — Google address verification tick state
-const googleVerifiedAddress = {
-  pickup: false,
-  dropoff: false
-};
-
-function setGoogleVerified(type, verified) {
-  googleVerifiedAddress[type] = Boolean(verified);
-  const input = type === "pickup" ? pickupAddress : dropoffAddress;
-  if (!input) return;
-
-  const field = input.closest(".field, .formField, label, .inputWrap") || input.parentElement;
-  if (!field) return;
-
-  field.classList.toggle("google-address-verified", Boolean(verified));
-}
-
-function resetGoogleVerified(type) {
-  setGoogleVerified(type, false);
-}
-
-if (pickupAddress) {
-  resetGoogleVerified("pickup");
-  pickupAddress.addEventListener("input", () => resetGoogleVerified("pickup"));
-}
-if (dropoffAddress) {
-  resetGoogleVerified("dropoff");
-  dropoffAddress.addEventListener("input", () => resetGoogleVerified("dropoff"));
-}
-
 let routeKey = "";
 let quoteTimer = null;
 
@@ -163,6 +128,31 @@ const dropoffAddress = document.getElementById("dropoffAddress");
 const pickupPlaceId = document.getElementById("pickupPlaceId");
 const dropoffPlaceId = document.getElementById("dropoffPlaceId");
 const routeInfo = document.getElementById("routeInfo");
+
+// V15.2 — Google address verification state
+function setAddressVerified(input, verified) {
+  if (!input) return;
+  const field = input.closest(".field, .formField, label, .inputWrap") || input.parentElement;
+  if (!field) return;
+  field.classList.toggle("google-address-verified", Boolean(verified));
+}
+
+setAddressVerified(pickupAddress, false);
+setAddressVerified(dropoffAddress, false);
+
+pickupAddress?.addEventListener("input", () => {
+  setAddressVerified(pickupAddress, false);
+});
+
+dropoffAddress?.addEventListener("input", () => {
+  setAddressVerified(dropoffAddress, false);
+});
+
+document.addEventListener("ygt-place-selected", () => {
+  setAddressVerified(pickupAddress, Boolean(pickupPlaceId?.value));
+  setAddressVerified(dropoffAddress, Boolean(dropoffPlaceId?.value));
+});
+
 
 function fillTimes(id) {
   const select = document.getElementById(id);

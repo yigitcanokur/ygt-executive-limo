@@ -212,3 +212,30 @@
   z-index:3;
 }
 .google-address-verified input{padding-right:48px!important}
+
+/* V15.2 — verification tick + functional date/time fix */
+.google-address-verified{position:relative}
+.google-address-verified::after{
+  content:"✓"!important;
+  position:absolute;
+  right:14px;
+  top:36px;
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#183d2b;
+  color:#66d49a;
+  font-size:13px;
+  font-weight:900;
+  pointer-events:none;
+  z-index:4;
+}
+.field:not(.google-address-verified)::after,
+.formField:not(.google-address-verified)::after,
+.inputWrap:not(.google-address-verified)::after{
+  content:none!important;
+}
+#pickupTime,#returnTime{cursor:pointer}
+.dateDisplayWrap{cursor:pointer}
