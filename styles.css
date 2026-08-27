@@ -25,7 +25,7 @@
 .logo{width:300px;height:108px;object-fit:contain}
 .headerBook{padding:19px 29px;border-radius:2px}
 .googleHint{display:flex;align-items:center;gap:6px}
-.googleHint:before{content:"✓";color:#4fbf7f;font-weight:800}
+
 .googleHint.mapsWarning:before{content:"!";color:#e9a267}
 .airportPolicy{margin-top:15px;padding:13px;border:1px solid rgba(216,173,82,.2);border-radius:9px;background:rgba(216,173,82,.06);color:#aaa;font-size:11px;line-height:1.55}
 .mobileBookingBar{display:none}
@@ -184,58 +184,44 @@
 @media(max-width:1050px){.premiumIntro,.trustPremium{grid-template-columns:1fr}.premiumFleetGrid,.serviceCards{grid-template-columns:repeat(2,1fr)}.serviceAreaGrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.heroTrustBar{position:relative;left:auto;right:auto;bottom:auto;grid-template-columns:1fr 1fr;margin:0 18px 22px}.heroTrustBar div:nth-child(2){border-right:0}.premiumIntro,.premiumServices,.premiumFleetShowcase,.serviceAreasPremium,.trustPremium,.reviewsReady{margin:80px auto}.premiumStats,.premiumFleetGrid,.serviceCards,.serviceAreaGrid,.trustPremiumGrid{grid-template-columns:1fr}.premiumStats article{border-right:0!important}.premiumStats article:nth-last-child(-n+2){border-bottom:1px solid #242424}.premiumStats article:last-child{border-bottom:0}.premiumFleetImage{height:210px}.reviewsReady{align-items:flex-start;flex-direction:column;padding:30px}.trustPremium{padding:30px}}
 
-/* V15.1 Google verification tick */
+/* CLEAN verification tick */
 .googleHint::before,
 .googleLocationHelper::before,
 .locationHelper::before,
 .field::after,
 .formField::after,
-.inputWrap::after{
-  content:none!important;
+.inputWrap::after {
+  content: none !important;
 }
-.google-address-verified{position:relative}
-.google-address-verified::after{
-  content:"✓"!important;
-  position:absolute;
-  right:14px;
-  top:36px;
-  width:22px;
-  height:22px;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  background:#183d2b;
-  color:#66d49a;
-  font-size:13px;
-  font-weight:900;
-  pointer-events:none;
-  z-index:3;
-}
-.google-address-verified input{padding-right:48px!important}
 
-/* V15.2 — verification tick + functional date/time fix */
-.google-address-verified{position:relative}
-.google-address-verified::after{
-  content:"✓"!important;
-  position:absolute;
-  right:14px;
-  top:36px;
-  width:22px;
-  height:22px;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  background:#183d2b;
-  color:#66d49a;
-  font-size:13px;
-  font-weight:900;
-  pointer-events:none;
-  z-index:4;
+.google-address-verified {
+  position: relative;
 }
-.field:not(.google-address-verified)::after,
-.formField:not(.google-address-verified)::after,
-.inputWrap:not(.google-address-verified)::after{
-  content:none!important;
+
+.google-address-verified::after {
+  content: "✓" !important;
+  position: absolute;
+  right: 14px;
+  top: 36px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #183d2b;
+  color: #66d49a;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 5;
 }
-#pickupTime,#returnTime{cursor:pointer}
-.dateDisplayWrap{cursor:pointer}
+
+.google-address-verified input {
+  padding-right: 48px !important;
+}
+
+#pickupTime,
+#returnTime {
+  cursor: pointer;
+}

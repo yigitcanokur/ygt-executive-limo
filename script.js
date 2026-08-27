@@ -105,19 +105,6 @@ let currentStep = 1;
 let selectedVehicle = "";
 let routeQuote = null;
 
-function setAddressVerified(input, verified){
-  if(!input)return;
-  const field=input.closest(".field, .formField, label, .inputWrap")||input.parentElement;
-  if(field)field.classList.toggle("google-address-verified",!!verified);
-}
-if(pickupAddress){
-  setAddressVerified(pickupAddress,false);
-  pickupAddress.addEventListener("input",()=>setAddressVerified(pickupAddress,false));
-}
-if(dropoffAddress){
-  setAddressVerified(dropoffAddress,false);
-  dropoffAddress.addEventListener("input",()=>setAddressVerified(dropoffAddress,false));
-}
 let routeKey = "";
 let quoteTimer = null;
 
@@ -129,7 +116,7 @@ const pickupPlaceId = document.getElementById("pickupPlaceId");
 const dropoffPlaceId = document.getElementById("dropoffPlaceId");
 const routeInfo = document.getElementById("routeInfo");
 
-// V15.2 — Google address verification state
+// CLEAN GOOGLE VERIFICATION STATE
 function setAddressVerified(input, verified) {
   if (!input) return;
   const field = input.closest(".field, .formField, label, .inputWrap") || input.parentElement;
@@ -140,17 +127,17 @@ function setAddressVerified(input, verified) {
 setAddressVerified(pickupAddress, false);
 setAddressVerified(dropoffAddress, false);
 
-pickupAddress?.addEventListener("input", () => {
+pickupAddress.addEventListener("input", () => {
   setAddressVerified(pickupAddress, false);
 });
 
-dropoffAddress?.addEventListener("input", () => {
+dropoffAddress.addEventListener("input", () => {
   setAddressVerified(dropoffAddress, false);
 });
 
 document.addEventListener("ygt-place-selected", () => {
-  setAddressVerified(pickupAddress, Boolean(pickupPlaceId?.value));
-  setAddressVerified(dropoffAddress, Boolean(dropoffPlaceId?.value));
+  setAddressVerified(pickupAddress, Boolean(pickupPlaceId.value));
+  setAddressVerified(dropoffAddress, Boolean(dropoffPlaceId.value));
 });
 
 
