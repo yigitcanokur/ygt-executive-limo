@@ -6,7 +6,7 @@ const fixedPricing = {
   "fll-portmiami": {"Luxury Sedan":150,"Chevrolet Suburban":170,"Cadillac Escalade ESV":215,"Mercedes-Benz S-Class":250,"Passenger Sprinter":355,"Executive Sprinter":410},
   "mia-boca": {"Luxury Sedan":170,"Chevrolet Suburban":210,"Cadillac Escalade ESV":245,"Mercedes-Benz S-Class":295,"Passenger Sprinter":430,"Executive Sprinter":485},
   "fll-boca": {"Luxury Sedan":135,"Chevrolet Suburban":165,"Cadillac Escalade ESV":195,"Mercedes-Benz S-Class":235,"Passenger Sprinter":350,"Executive Sprinter":395},
-  "mia-west-palm": {"Luxury Sedan":205,"Chevrolet Suburban":260,"Cadillac Escalade ESV":300,"Mercedes-Benz S-Class":350,"Passenger Sprinter":520,"Executive Sprinter":595},
+  "mia-west-palm": {"Luxury Sedan":205,"Chevrolet Suburban":230,"Cadillac Escalade ESV":300,"Mercedes-Benz S-Class":350,"Passenger Sprinter":450,"Executive Sprinter":595},
   "fll-west-palm": {"Luxury Sedan":175,"Chevrolet Suburban":220,"Cadillac Escalade ESV":255,"Mercedes-Benz S-Class":300,"Passenger Sprinter":470,"Executive Sprinter":540},
   "mia-orlando": {"Luxury Sedan":525,"Chevrolet Suburban":650,"Cadillac Escalade ESV":750,"Mercedes-Benz S-Class":850,"Passenger Sprinter":1150,"Executive Sprinter":1300}
 };

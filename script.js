@@ -58,10 +58,10 @@ const fixedPricing = {
   },
   "mia-west-palm": {
     "Luxury Sedan": 205,
-    "Chevrolet Suburban": 260,
+    "Chevrolet Suburban": 230,
     "Cadillac Escalade ESV": 300,
     "Mercedes-Benz S-Class": 350,
-    "Passenger Sprinter": 520,
+    "Passenger Sprinter": 450,
     "Executive Sprinter": 595
   },
   "fll-west-palm": {
