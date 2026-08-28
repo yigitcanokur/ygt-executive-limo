@@ -145,7 +145,7 @@ module.exports = async function handler(req, res) {
     const session = await stripe.checkout.sessions.create({
       mode:"payment",
       customer_email:body.email,
-      success_url:`${siteUrl}/success.html?reservation=${reservationId}`,
+      success_url:`${siteUrl}/success.html?reservation=${reservationId}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:`${siteUrl}/cancelled.html`,
       line_items:[{
         quantity:1,

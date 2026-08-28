@@ -243,3 +243,33 @@
   .mobileContactBar a:last-child{border-right:0}
   .premiumReviewSummary{grid-template-columns:1fr}
 }
+
+/* V17 Premium Confirmation */
+.confirmationPageBody{background:#070707;color:#f3efe6}
+.confirmationHeader{position:relative}
+.confirmationPage{width:min(1240px,92vw);margin:70px auto 120px}
+.confirmationHero{text-align:center;max-width:900px;margin:0 auto 55px}
+.confirmationCheck{width:58px;height:58px;display:grid;place-items:center;margin:20px auto;border-radius:50%;background:rgba(78,179,117,.12);border:1px solid rgba(78,179,117,.45);color:#68d496;font-size:28px;font-weight:900}
+.confirmationHero h1{font:clamp(54px,7vw,90px) Georgia;line-height:.98;margin:16px 0}
+.confirmationHero>p{color:#aaa;font-size:17px}
+.confirmationNumber{display:inline-flex;gap:16px;align-items:center;margin-top:18px;padding:13px 18px;border:1px solid #292929;border-radius:999px;background:#0e0e0e}
+.confirmationNumber span{color:#777;text-transform:uppercase;font-size:9px;letter-spacing:.12em}
+.confirmationNumber strong{color:var(--gold2)}
+.confirmationLayout{display:grid;grid-template-columns:1.4fr .6fr;gap:18px}
+.confirmationMainCard,.confirmationSideCard{border:1px solid #272727;background:linear-gradient(150deg,#111,#0b0b0b);border-radius:16px;padding:30px}
+.confirmationCardTitle h2{font:40px Georgia;margin:10px 0 24px}
+.confirmationLoading{padding:30px;border:1px dashed #333;border-radius:12px;color:#888;text-align:center}
+.confirmationDetailGrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#242424;border:1px solid #252525;border-radius:12px;overflow:hidden}
+.confirmationDetailGrid>div{background:#0d0d0d;padding:17px}
+.confirmationDetailGrid .wide{grid-column:1/-1}
+.confirmationDetailGrid span{display:block;color:#777;font-size:9px;text-transform:uppercase;letter-spacing:.11em;margin-bottom:6px}
+.confirmationDetailGrid strong{font-size:13px;line-height:1.55}
+.confirmationPaid{display:flex;justify-content:space-between;align-items:center}
+.confirmationPaid strong{font:30px Georgia;color:var(--gold2)}
+.nextStepItem{display:grid;grid-template-columns:38px 1fr;gap:12px;padding:18px 0;border-bottom:1px solid #242424}
+.nextStepItem>span{width:30px;height:30px;border:1px solid rgba(216,173,82,.4);border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-size:10px}
+.nextStepItem strong{display:block;margin-bottom:5px}.nextStepItem p{margin:0;color:#888;line-height:1.55;font-size:13px}
+.confirmationContact{margin-top:22px;padding:18px;border:1px solid rgba(216,173,82,.22);border-radius:12px;background:rgba(216,173,82,.05)}
+.confirmationContact p{color:#888;line-height:1.55}.confirmationContact a{color:var(--gold2);font-weight:800}
+.confirmationActions{display:flex;justify-content:center;gap:12px;margin-top:30px}
+@media(max-width:850px){.confirmationLayout{grid-template-columns:1fr}.confirmationDetailGrid{grid-template-columns:1fr}.confirmationDetailGrid .wide{grid-column:auto}.confirmationPaid{display:block}.confirmationActions{flex-direction:column}.confirmationActions a{text-align:center}}

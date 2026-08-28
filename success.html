@@ -1,18 +1,131 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="styles.css"><title>Reservation Confirmed | YGT Executive Limo</title></head>
-<body><main class="statusPage"><section class="statusCard">
-<span class="eyebrow">Payment successful</span>
-<h1>Your ride is confirmed.</h1>
-<p id="reservationText">Your reservation has been received.</p>
-<div class="confirmationDetails">
-  <div><span>Payment</span><strong>Paid securely with Stripe</strong></div>
-  <div><span>Confirmation</span><strong>Email receipt and booking details</strong></div>
-  <div><span>Next step</span><strong>Chauffeur details before pickup</strong></div>
-</div>
-<p>Keep your reservation number for any changes or questions.</p>
-<a class="goldBtn" href="/">Return to website</a>
-</section></main>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reservation Confirmed | YGT Executive Limo</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="confirmationPageBody">
+<header class="header confirmationHeader">
+  <a href="/"><img class="logo" src="assets/logo.png" alt="YGT Executive Limo"></a>
+  <a class="headerBook" href="/">Home</a>
+</header>
+
+<main class="confirmationPage">
+  <section class="confirmationHero">
+    <span class="eyebrow">Payment Successful</span>
+    <div class="confirmationCheck">✓</div>
+    <h1>Your ride is confirmed.</h1>
+    <p>Your payment was successful and your reservation has been received.</p>
+    <div class="confirmationNumber">
+      <span>Reservation Number</span>
+      <strong id="reservationNumber">Loading…</strong>
+    </div>
+  </section>
+
+  <section class="confirmationLayout">
+    <div class="confirmationMainCard">
+      <div class="confirmationCardTitle">
+        <span class="eyebrow">Trip Details</span>
+        <h2>Reservation summary</h2>
+      </div>
+
+      <div id="confirmationLoading" class="confirmationLoading">Loading your reservation details…</div>
+
+      <div id="confirmationDetails" class="confirmationDetailGrid" hidden>
+        <div class="wide"><span>Pickup</span><strong id="cPickup">—</strong></div>
+        <div class="wide"><span>Drop-off</span><strong id="cDropoff">—</strong></div>
+        <div><span>Date & Time</span><strong id="cDate">—</strong></div>
+        <div><span>Vehicle</span><strong id="cVehicle">—</strong></div>
+        <div><span>Passengers</span><strong id="cPassengers">—</strong></div>
+        <div><span>Luggage</span><strong id="cLuggage">—</strong></div>
+        <div id="flightRow"><span>Flight</span><strong id="cFlight">—</strong></div>
+        <div><span>Pickup Preference</span><strong id="cPickupStyle">—</strong></div>
+        <div class="wide confirmationPaid"><span>Total Paid</span><strong id="cTotal">—</strong></div>
+      </div>
+    </div>
+
+    <aside class="confirmationSideCard">
+      <span class="eyebrow">What Happens Next</span>
+      <div class="nextStepItem"><span>01</span><div><strong>Reservation received</strong><p>Your booking is now in our system.</p></div></div>
+      <div class="nextStepItem"><span>02</span><div><strong>Trip coordination</strong><p>We review your travel details and prepare the service.</p></div></div>
+      <div class="nextStepItem"><span>03</span><div><strong>Chauffeur details</strong><p>Final pickup instructions and chauffeur information are provided before service.</p></div></div>
+      <div class="confirmationContact">
+        <strong>Need to make a change?</strong>
+        <p>Keep your reservation number when contacting YGT Executive Limo.</p>
+        <a href="tel:+12018971912">Call (201) 897-1912</a>
+      </div>
+    </aside>
+  </section>
+
+  <div class="confirmationActions">
+    <a class="goldBtn" href="/">Return to Website</a>
+    <a class="outlineBtn" href="/#booking">Book Another Ride</a>
+  </div>
+</main>
+
 <script>
-const reservation=new URLSearchParams(location.search).get("reservation");
-if(reservation)document.getElementById("reservationText").innerHTML=`Reservation number: <strong>${reservation}</strong>`;
-</script></body></html>
+const params = new URLSearchParams(location.search);
+const reservation = params.get("reservation");
+const sessionId = params.get("session_id");
+if (reservation) document.getElementById("reservationNumber").textContent = reservation;
+
+function money(cents, currency) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: String(currency || "usd").toUpperCase()
+  }).format((cents || 0) / 100);
+}
+
+function formatDate(date, time) {
+  if (!date) return "—";
+  const d = new Date(date + "T12:00:00");
+  const dateText = d.toLocaleDateString("en-US", {
+    weekday: "short", month: "short", day: "numeric", year: "numeric"
+  });
+  if (!time) return dateText;
+  const t = new Date(`2000-01-01T${time}:00`);
+  return `${dateText} · ${t.toLocaleTimeString("en-US", {hour:"numeric",minute:"2-digit"})}`;
+}
+
+async function loadConfirmation() {
+  if (!sessionId) {
+    document.getElementById("confirmationLoading").textContent =
+      "Reservation confirmed. Detailed trip information is available from your booking record.";
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/checkout-session?session_id=${encodeURIComponent(sessionId)}`);
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Unable to load booking details");
+
+    document.getElementById("reservationNumber").textContent = data.reservationId || reservation || "Confirmed";
+    document.getElementById("cPickup").textContent = data.pickupAddress || "—";
+    document.getElementById("cDropoff").textContent = data.dropoffAddress || "—";
+    document.getElementById("cDate").textContent = formatDate(data.date, data.time);
+    document.getElementById("cVehicle").textContent = data.vehicle || "—";
+    document.getElementById("cPassengers").textContent = data.passengers || "—";
+    document.getElementById("cLuggage").textContent = data.luggage || "—";
+    document.getElementById("cPickupStyle").textContent = data.pickupStyle || "Standard";
+    document.getElementById("cTotal").textContent = money(data.amountTotal, data.currency);
+
+    const flight = [data.airline, data.flight].filter(Boolean).join(" ");
+    if (flight) {
+      document.getElementById("cFlight").textContent = flight;
+    } else {
+      document.getElementById("flightRow").hidden = true;
+    }
+
+    document.getElementById("confirmationLoading").hidden = true;
+    document.getElementById("confirmationDetails").hidden = false;
+  } catch (error) {
+    document.getElementById("confirmationLoading").textContent =
+      "Payment confirmed. We could not load the detailed summary, but your reservation is active.";
+  }
+}
+loadConfirmation();
+</script>
+</body>
+</html>
