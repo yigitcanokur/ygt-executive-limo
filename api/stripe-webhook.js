@@ -1,170 +1,109 @@
 
 const Stripe = require("stripe");
 const { Resend } = require("resend");
-const { getAdminClient } = require("./_db");
 
-function money(cents) {
-  return new Intl.NumberFormat("en-US", {
-    style:"currency",
-    currency:"USD"
-  }).format((cents || 0) / 100);
+async function readRawBody(req) {
+  const chunks = [];
+  for await (const chunk of req) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+  return Buffer.concat(chunks);
 }
 
+function esc(v) {
+  return String(v ?? "")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+function money(cents, currency="usd") {
+  return new Intl.NumberFormat("en-US",{style:"currency",currency:String(currency).toUpperCase()})
+    .format((Number(cents)||0)/100);
+}
 function row(label, value) {
   if (!value) return "";
-  return `<tr><td style="padding:8px 12px;color:#777;border-bottom:1px solid #eee">${label}</td><td style="padding:8px 12px;font-weight:600;border-bottom:1px solid #eee">${value}</td></tr>`;
+  return `<tr><td style="padding:10px 12px;color:#777;border-bottom:1px solid #eee;width:34%">${esc(label)}</td><td style="padding:10px 12px;font-weight:600;border-bottom:1px solid #eee">${esc(value)}</td></tr>`;
 }
-
-function reservationTable(session) {
+function table(session) {
   const m = session.metadata || {};
-  return `
-    <table style="width:100%;border-collapse:collapse;margin:22px 0">
-      ${row("Reservation", m.reservationId)}
-      ${row("Customer", m.name)}
-      ${row("Phone", m.phone)}
-      ${row("Service", m.serviceType)}
-      ${row("Vehicle", m.vehicle)}
-      ${row("Pickup", m.pickupAddress)}
-      ${row("Drop-off", m.dropoffAddress)}
-      ${row("Pickup date", `${m.date || ""} ${m.time || ""}`.trim())}
-      ${row("Return", `${m.returnDate || ""} ${m.returnTime || ""}`.trim())}
-      ${row("Flight", `${m.airline || ""} ${m.flight || ""}`.trim())}
-      ${row("Pickup preference", m.pickupStyle)}
-      ${row("Child seat", m.childSeat)}
-      ${row("Passengers", m.passengers)}
-      ${row("Luggage", m.luggage)}
-      ${row("Special requests", m.notes)}
-      ${row("Paid", money(session.amount_total))}
-    </table>`;
+  return `<table style="width:100%;border-collapse:collapse;border:1px solid #eee">
+    ${row("Reservation",m.reservationId)}
+    ${row("Passenger",m.name)}
+    ${row("Phone",m.phone)}
+    ${row("Vehicle",m.vehicle)}
+    ${row("Pickup",m.pickupAddress)}
+    ${row("Drop-off",m.dropoffAddress)}
+    ${row("Date & Time",[m.date,m.time].filter(Boolean).join(" "))}
+    ${row("Return",[m.returnDate,m.returnTime].filter(Boolean).join(" "))}
+    ${row("Flight",[m.airline,m.flight].filter(Boolean).join(" "))}
+    ${row("Pickup Preference",m.pickupStyle)}
+    ${row("Passengers",m.passengers)}
+    ${row("Luggage",m.luggage)}
+    ${row("Child Seat",m.childSeat)}
+    ${row("Special Requests",m.notes)}
+    ${row("Total Paid",money(session.amount_total,session.currency))}
+  </table>`;
 }
-
-
-async function saveBooking(session) {
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    console.log("Supabase is not configured; skipping booking storage.");
-    return;
-  }
-
-  const m = session.metadata || {};
-  const supabase = getAdminClient();
-  const payload = {
-    reservation_id: m.reservationId || session.id,
-    stripe_session_id: session.id,
-    payment_status: session.payment_status || "paid",
-    amount_total: session.amount_total || 0,
-    currency: session.currency || "usd",
-    customer_name: m.name || "",
-    customer_email: session.customer_details?.email || session.customer_email || "",
-    customer_phone: m.phone || "",
-    service_type: m.serviceType || "",
-    route_key: m.routeKey || "",
-    vehicle: m.vehicle || "",
-    pickup_address: m.pickupAddress || "",
-    dropoff_address: m.dropoffAddress || "",
-    pickup_date: m.date || "",
-    pickup_time: m.time || "",
-    return_date: m.returnDate || "",
-    return_time: m.returnTime || "",
-    flight: m.flight || "",
-    airline: m.airline || "",
-    pickup_style: m.pickupStyle || "",
-    child_seat: m.childSeat || "",
-    passengers: m.passengers || "",
-    luggage: m.luggage || "",
-    notes: m.notes || "",
-    status: "New"
-  };
-
-  const { error } = await supabase
-    .from("bookings")
-    .upsert(payload, { onConflict: "stripe_session_id" });
-
-  if (error) throw error;
+function shell(title, eyebrow, body) {
+  return `<!doctype html><html><body style="margin:0;background:#f5f3ee;font-family:Arial,sans-serif;color:#111">
+  <div style="max-width:720px;margin:auto;padding:28px 14px">
+    <div style="background:#080808;padding:30px;text-align:center;border-top:4px solid #d8ad52">
+      <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#d8ad52;margin-bottom:12px">${esc(eyebrow)}</div>
+      <h1 style="margin:0;color:#fff;font-family:Georgia,serif;font-weight:400;font-size:38px">${esc(title)}</h1>
+    </div>
+    <div style="background:#fff;padding:30px;border:1px solid #e9e5dc;border-top:0">${body}</div>
+    <div style="text-align:center;padding:20px;color:#888;font-size:12px;line-height:1.6">
+      YGT Executive Limo · (201) 897-1912 · ygtexecutivelimo.com
+    </div>
+  </div></body></html>`;
 }
 
 async function sendEmails(session) {
-  if (!process.env.RESEND_API_KEY) {
-    console.log("RESEND_API_KEY is missing; payment confirmed without email.");
-    return;
-  }
-
+  if (!process.env.RESEND_API_KEY) return;
   const resend = new Resend(process.env.RESEND_API_KEY);
   const m = session.metadata || {};
-  const customerEmail = session.customer_details?.email || session.customer_email;
-  const ownerEmail = process.env.BOOKING_NOTIFICATION_EMAIL || "yigitcanflorida@gmail.com";
-  const fromEmail = process.env.BOOKING_FROM_EMAIL || "YGT Executive Limo <bookings@resend.dev>";
+  const reservation = m.reservationId || "YGT Reservation";
+  const from = process.env.BOOKING_FROM_EMAIL || "YGT Executive Limo <reservations@ygtexecutivelimo.com>";
+  const owner = process.env.BOOKING_NOTIFICATION_EMAIL || "yigitcanflorida@gmail.com";
+  const customer = session.customer_details?.email || session.customer_email || m.email || "";
 
-  if (customerEmail) {
+  if (customer) {
     await resend.emails.send({
-      from: fromEmail,
-      to: customerEmail,
-      subject: `Reservation Confirmed — ${m.reservationId || "YGT Executive Limo"}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:680px;margin:auto;color:#111">
-          <div style="background:#090909;color:#fff;padding:28px;text-align:center">
-            <h1 style="margin:0;color:#e1b85b;font-family:Georgia,serif">Your ride is confirmed.</h1>
-          </div>
-          <div style="padding:30px;border:1px solid #eee">
-            <p>Thank you for choosing YGT Executive Limo. Your payment was successful and the reservation is confirmed.</p>
-            ${reservationTable(session)}
-            <p>Your chauffeur information and final pickup instructions will be provided before service.</p>
-            <p style="color:#777;font-size:13px">Questions? Call (201) 897-1912 or reply to your booking contact.</p>
-          </div>
-        </div>`
+      from, to: customer,
+      subject: `Reservation Confirmed — ${reservation}`,
+      html: shell("Your ride is confirmed.","Booking Confirmed",
+        `<p style="font-size:15px;line-height:1.7">Thank you for choosing YGT Executive Limo. Your payment was successful and your reservation is confirmed.</p>
+        ${table(session)}
+        <div style="margin-top:24px;padding:18px;background:#faf8f3;border-left:3px solid #d8ad52">
+          <strong>What happens next</strong><div style="margin-top:7px;color:#666;font-size:13px;line-height:1.6">We will coordinate your trip and provide final pickup instructions and chauffeur information before service.</div>
+        </div>`)
     });
   }
 
   await resend.emails.send({
-    from: fromEmail,
-    to: ownerEmail,
-    subject: `New Paid Booking — ${m.reservationId || "YGT"}`,
-    html: `
-      <div style="font-family:Arial,sans-serif;max-width:680px;margin:auto">
-        <h1>New paid reservation</h1>
-        ${reservationTable(session)}
-        <p>Stripe Checkout Session: ${session.id}</p>
-      </div>`
+    from, to: owner,
+    subject: `New Paid Reservation — ${reservation}`,
+    html: shell("New paid reservation.","YGT Booking Alert",
+      `<p style="font-size:15px;line-height:1.7">A new website reservation has been paid.</p>${table(session)}
+      <p style="color:#777;font-size:12px;margin-top:18px">Stripe Session: ${esc(session.id)}</p>`)
   });
 }
 
-module.exports = async function handler(req, res) {
+module.exports = async function handler(req,res) {
   if (req.method !== "POST") return res.status(405).send("Method not allowed");
-  if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
-    return res.status(500).send("Stripe webhook is not configured");
-  }
-
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-  const signature = req.headers["stripe-signature"];
-
-  let event;
-  try {
-    event = stripe.webhooks.constructEvent(
-      req.body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
-  } catch (error) {
-    return res.status(400).send(`Webhook Error: ${error.message}`);
-  }
+  if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) return res.status(500).send("Stripe webhook is not configured");
 
   try {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const raw = await readRawBody(req);
+    const event = stripe.webhooks.constructEvent(raw, req.headers["stripe-signature"], process.env.STRIPE_WEBHOOK_SECRET);
+
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
-      if (session.payment_status === "paid") {
-        await saveBooking(session);
-        await sendEmails(session);
-        console.log("PAID RESERVATION", session.metadata?.reservationId);
-      }
+      if (session.payment_status === "paid") await sendEmails(session);
     }
-    res.status(200).json({received:true});
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({error:"Webhook processing failed"});
+    return res.status(200).json({received:true});
+  } catch (err) {
+    console.error(err);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 };
 
-module.exports.config = {
-  api: {
-    bodyParser: false
-  }
-};
+module.exports.config = { api: { bodyParser: false } };
